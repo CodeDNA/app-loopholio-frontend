@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
           // Call AI backend to analyze the ToS
           let risks: any[] = [];
-          let url = `${process.env.PARSE_API_BASE_URL}/analyze-document`;
+          let url = `${process.env.BACKEND_API_URL}/analyze-document`;
           const formData = new FormData();
           if (tosText && tosText.trim() !== "") {
             formData.append("tosText", tosText);
