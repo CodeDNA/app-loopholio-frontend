@@ -1,0 +1,7 @@
+# pnpm configuration file
+
+# Package overrides - pin specific versions
+overrides.hono=4.12.25
+
+# Allow specific packages to build despite Node version issues
+ignore-scripts=false

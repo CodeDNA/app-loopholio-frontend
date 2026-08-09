@@ -1,0 +1,13 @@
+# Environment variables
+.env*.local
+.env
+.zshrcexport
+
+# Common ignores
+node_modules
+.next/
+.DS_Store
+.vscode/
+dev_imp.md
+devnotes.md
+.dockerignore
