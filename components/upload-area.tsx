@@ -8,11 +8,14 @@ interface UploadAreaProps {
   onAnalyze: (file: File, text: string) => void;
   isLoading: boolean;
 }
+
 const MAX_FILE_SIZE_MB = 5;
 const MIN_TEXT_LENGTH = 100;
+const MAX_TEXT_LENGTH = 50000;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
-const FILE_SIZE_INSTRUCTION = `Max File size: ${MAX_FILE_SIZE_MB} MB | Minimum text length: ${MIN_TEXT_LENGTH} characters`;
+const FILE_SIZE_INSTRUCTION = `Max file size: ${MAX_FILE_SIZE_MB} MB | Min text length: ${MIN_TEXT_LENGTH} | Max text length: ${MAX_TEXT_LENGTH}`;
 const FILE_SIZE_ERROR_MESSAGE = `[ ERROR: Max file size exceeded! File must be smaller than ${MAX_FILE_SIZE_MB} Mb ]`;
+const MAX_TEXT_LENGTH_ERROR = `[ ERROR: Max allowed text length: ${MAX_TEXT_LENGTH} characters ]`;
 
 export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -20,7 +23,7 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
   const [fileName, setFileName] = useState<string | null>(null);
   const dragCounter = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [fileSizeError, setfileError] = useState<string>("");
+  const [inputError, setInputError] = useState<string>("");
 
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault();
@@ -68,10 +71,10 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
       return;
     }
     if (file.size > MAX_FILE_SIZE_BYTES) {
-      setfileError(FILE_SIZE_ERROR_MESSAGE);
+      setInputError(FILE_SIZE_ERROR_MESSAGE);
       return;
     } else {
-      setfileError("");
+      setInputError("");
     }
 
     setFileName(file.name);
@@ -79,8 +82,20 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("FILE CHANGED");
     if (e.target.files?.[0]) {
       handleFile(e.target.files[0]);
+    }
+  };
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (!fileName) {
+      setText(e.target.value);
+    }
+    if (e.target.value.length > MAX_TEXT_LENGTH) {
+      setInputError(MAX_TEXT_LENGTH_ERROR);
+    } else {
+      setInputError("");
     }
   };
 
@@ -99,7 +114,7 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
     setText("");
   };
 
-  const hasContent = fileName || text.trim().length >= MIN_TEXT_LENGTH;
+  const hasContent = fileName || text.trim();
 
   return (
     <>
@@ -177,7 +192,8 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
         >
           <textarea
             value={fileName ? `File: ${fileName}` : text}
-            onChange={(e) => !fileName && setText(e.target.value)}
+            // onChange={(e) => !fileName && setText(e.target.value)}
+            onChange={handleTextChange}
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
@@ -192,7 +208,7 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
         {/* Send button */}
         <Button
           onClick={handleAnalyze}
-          disabled={!hasContent || isLoading}
+          disabled={!hasContent || isLoading || inputError != ""}
           className="h-10 px-4 bg-teal-500 hover:bg-teal-700 text-white font-semibold rounded-r-2xl transition-all shrink-0"
         >
           {isLoading ? (
@@ -207,15 +223,22 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
       <div className="flex justify-between items-centre">
         <div>
           <p className="p-2 text-zinc-300">{FILE_SIZE_INSTRUCTION}</p>
-          <p className="p-2 text-red-500 font-medium">{fileSizeError}</p>
+          <p className="p-2 text-red-500 font-medium">{inputError}</p>
         </div>
         <p
           className={cn(
             "pr-2",
-            text.trim().length >= 100 ? "text-teal-500" : "text-zinc-700",
+            text.trim().length >= MIN_TEXT_LENGTH
+              ? text.trim().length > MAX_TEXT_LENGTH
+                ? "text-red-500"
+                : "text-teal-500"
+              : "text-zinc-700",
           )}
         >
-          {text.trim().length}/100
+          {text.trim().length}/
+          {text.trim().length < MIN_TEXT_LENGTH
+            ? MIN_TEXT_LENGTH
+            : MAX_TEXT_LENGTH}
         </p>
       </div>
     </>
