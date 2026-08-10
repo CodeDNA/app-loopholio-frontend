@@ -2,11 +2,17 @@
 
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface UploadAreaProps {
   onAnalyze: (file: File, text: string) => void;
   isLoading: boolean;
 }
+const MAX_FILE_SIZE_MB = 5;
+const MIN_TEXT_LENGTH = 100;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const FILE_SIZE_INSTRUCTION = `Max File size: ${MAX_FILE_SIZE_MB} MB | Minimum text length: ${MIN_TEXT_LENGTH} characters`;
+const FILE_SIZE_ERROR_MESSAGE = `[ ERROR: Max file size exceeded! File must be smaller than ${MAX_FILE_SIZE_MB} Mb ]`;
 
 export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -14,6 +20,7 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
   const [fileName, setFileName] = useState<string | null>(null);
   const dragCounter = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [fileSizeError, setfileError] = useState<string>("");
 
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault();
@@ -60,6 +67,13 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
       );
       return;
     }
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      setfileError(FILE_SIZE_ERROR_MESSAGE);
+      return;
+    } else {
+      setfileError("");
+    }
+
     setFileName(file.name);
     setText("");
   };
@@ -85,109 +99,125 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
     setText("");
   };
 
-  const hasContent = fileName || text.trim();
+  const hasContent = fileName || text.trim().length >= MIN_TEXT_LENGTH;
 
   return (
-    <div className="flex items-center gap-0 rounded-2xl border border-border/50 bg-[#0f0f0f] hover:border-primary/50 transition-all duration-200 focus-within:border-primary/50">
-      {/* Hidden file input */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".pdf,.doc,.docx,.txt,image/png,image/jpeg,image/jpg"
-        onChange={handleFileChange}
-        className="hidden"
-        disabled={isLoading}
-      />
-
-      {/* Plus button to upload files */}
-      {!fileName && (
-        <button
-          onClick={() => fileInputRef.current?.click()}
+    <>
+      <div className="flex items-center gap-0 rounded-2xl border border-border/50 bg-[#0f0f0f] hover:border-primary/50 transition-all duration-200 focus-within:border-primary/50 p-2">
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".pdf,.doc,.docx,.txt,image/png,image/jpeg,image/jpg"
+          onChange={handleFileChange}
+          className="hidden"
           disabled={isLoading}
-          className="group h-8 w-8 rounded-lg flex items-center justify-center shrink-0 text-muted-foreground hover:bg-emerald-500 transition-all disabled:opacity-50"
-          title="Upload PDF, Word document, text file, or image"
-        >
-          <svg
-            className="w-5 h-5 text-emerald-400 group-hover:text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
-        </button>
-      )}
+        />
 
-      {/* Clear file button (if file selected) */}
-      {fileName && (
-        <button
-          onClick={() => {
-            setFileName(null);
-            if (fileInputRef.current) fileInputRef.current.value = "";
-          }}
-          disabled={isLoading}
-          className="group h-8 w-8 rounded-lg flex items-center justify-center shrink-0 transition-colors text-muted-foreground hover:bg-red-500 disabled:opacity-50"
-          title="Clear file"
-        >
-          <svg
-            className="w-5 h-5 text-red-400 group-hover:text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* Plus button to upload files */}
+        {!fileName && (
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isLoading}
+            className="group h-8 w-8 rounded-lg flex items-center justify-center shrink-0 text-muted-foreground hover:bg-emerald-500 transition-all disabled:opacity-50"
+            title="Upload PDF, Word document, text file, or image"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-      )}
+            <svg
+              className="w-5 h-5 text-emerald-400 group-hover:text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          </button>
+        )}
 
-      {/* Textarea - 1 line, scrollable */}
-      <div
-        onDragEnter={handleDragEnter}
-        onDragLeave={handleDragLeave}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        className={`flex-1 transition-all duration-200 ${
-          isDragging ? "bg-primary/5" : ""
-        }`}
-      >
-        <textarea
-          value={fileName ? `File: ${fileName}` : text}
-          onChange={(e) => !fileName && setText(e.target.value)}
+        {/* Clear file button (if file selected) */}
+        {fileName && (
+          <button
+            onClick={() => {
+              setFileName(null);
+              if (fileInputRef.current) fileInputRef.current.value = "";
+            }}
+            disabled={isLoading}
+            className="group h-8 w-8 rounded-lg flex items-center justify-center shrink-0 transition-colors text-muted-foreground hover:bg-red-500 disabled:opacity-50"
+            title="Clear file"
+          >
+            <svg
+              className="w-5 h-5 text-red-400 group-hover:text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        )}
+
+        {/* Textarea - 1 line, scrollable */}
+        <div
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-          placeholder="Paste ToS text or drag & drop a document..."
-          disabled={isLoading}
-          className="w-full h-10 bg-transparent px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 resize-none focus:outline-none disabled:opacity-50 overflow-y-auto"
-          style={{ lineHeight: "1.5rem" }}
-        />
-      </div>
+          className={`flex-1 transition-all duration-200 ${
+            isDragging ? "bg-primary/5" : ""
+          }`}
+        >
+          <textarea
+            value={fileName ? `File: ${fileName}` : text}
+            onChange={(e) => !fileName && setText(e.target.value)}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            placeholder="Paste ToS text or drag & drop a document..."
+            disabled={isLoading}
+            className="w-full h-10 bg-transparent px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 resize-none focus:outline-none disabled:opacity-50 overflow-y-auto"
+            style={{ lineHeight: "1.5rem" }}
+          />
+        </div>
 
-      {/* Send button */}
-      <Button
-        onClick={handleAnalyze}
-        disabled={!hasContent || isLoading}
-        className="h-10 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-r-2xl transition-all shrink-0"
-      >
-        {isLoading ? (
-          <span className="flex items-center gap-2">
-            <span className="inline-block w-4 h-4 border-2 border-foreground border-t-transparent rounded-full animate-spin"></span>
-          </span>
-        ) : (
-          "Send"
-        )}
-      </Button>
-    </div>
+        {/* Send button */}
+        <Button
+          onClick={handleAnalyze}
+          disabled={!hasContent || isLoading}
+          className="h-10 px-4 bg-teal-500 hover:bg-teal-700 text-white font-semibold rounded-r-2xl transition-all shrink-0"
+        >
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <span className="inline-block w-4 h-4 border-2 border-foreground border-t-transparent rounded-full animate-spin"></span>
+            </span>
+          ) : (
+            "Send"
+          )}
+        </Button>
+      </div>
+      <div className="flex justify-between items-centre">
+        <div>
+          <p className="p-2 text-zinc-300">{FILE_SIZE_INSTRUCTION}</p>
+          <p className="p-2 text-red-500 font-medium">{fileSizeError}</p>
+        </div>
+        <p
+          className={cn(
+            "pr-2",
+            text.trim().length >= 100 ? "text-teal-500" : "text-zinc-700",
+          )}
+        >
+          {text.trim().length}/100
+        </p>
+      </div>
+    </>
   );
 }
