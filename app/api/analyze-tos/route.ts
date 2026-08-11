@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
+    console.log("VERCEL: forwarded:", request.headers.get("forwarded"));
+    console.log(
+      "VERCEL: x-forwarded-for:",
+      request.headers.get("x-forwarded-for"),
+    );
+    console.log(
+      "VERCEL: x-vercel-forwarded-for:",
+      request.headers.get("x-vercel-forwarded-for"),
+    );
+    console.log("VERCEL: x-real-ip:", request.headers.get("x-real-ip"));
     const formData = await request.formData();
     const file = formData.get("file") as File;
     const text = formData.get("text") as string;
