@@ -120,7 +120,6 @@ export async function POST(request: NextRequest) {
                   `data: ${JSON.stringify({ type: "no_risk_found" })}\n`,
                 ),
               );
-              // risks = [];
             }
           } catch (aiError) {
             console.warn("Backend Response Error:", aiError);

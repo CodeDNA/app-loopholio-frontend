@@ -33,7 +33,6 @@ function getRiskBadgeColor(level: "High" | "Medium" | "Low") {
 
 export function AnalysisDisplay({
   riskLevels,
-  fileName,
   isStreaming,
   error,
 }: AnalysisDisplayProps) {

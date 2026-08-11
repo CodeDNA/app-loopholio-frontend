@@ -10,32 +10,12 @@ import Image from "next/image";
 
 const STORAGE_KEY = "tos_analysis_history";
 
-const dummyanalysis = {
-  chunk_id: "chunk_002",
-  clause_id: "chunk_002_1",
-  section_title: "3. Account Registration and Security",
-  level: "Low",
-  confidence: 95,
-  category: "Limitation of Liability",
-  reason:
-    "The clause places the responsibility on the user to maintain the confidentiality of their account credentials and holds them accountable for all activities under their account. This creates a risk by limiting the company's liability for unauthorized access or misuse of the account, which could lead to potential financial or operational consequences for the user.",
-  whyMatters:
-    "This matters because if someone else accesses your account without your permission, you could still be held responsible for what they do. This could lead to unexpected charges or other issues that you would have to deal with, even if you weren't at fault.",
-  recommendation:
-    "Ensure you understand how to keep your account credentials secure and consider whether you are comfortable with this level of responsibility.",
-  exactClause:
-    "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.",
-  source_text:
-    "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to notify Nimbusly immediately of any unauthorized use of your account. Nimbusly is not liable for any loss or damage arising from your failure to safeguard your login information.",
-};
-
 export default function Page() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [currentAnalysis, setCurrentAnalysis] = useState<Analysis | null>(null);
   const [currentStatus, setCurrentStatus] = useState<string>(
     "Calling LoopHolio AI...",
   );
-  const [apierror, setApiError] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
