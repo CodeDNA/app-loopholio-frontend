@@ -2,16 +2,30 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("VERCEL: forwarded:", request.headers.get("forwarded"));
-    console.log(
-      "VERCEL: x-forwarded-for:",
-      request.headers.get("x-forwarded-for"),
-    );
-    console.log(
-      "VERCEL: x-vercel-forwarded-for:",
-      request.headers.get("x-vercel-forwarded-for"),
-    );
-    console.log("VERCEL: x-real-ip:", request.headers.get("x-real-ip"));
+    /*
+    I am using this 'clientIp' to be used in a custom header - "x-loopholio-client-ip".
+    This was required because the UI is deployed on vercel and vercel was not propagating the IP properly to the backend(Google Cloud run).
+    
+    What's happening?
+    The flow: ClientUI request -> Vercel -> Vercel Proxy Server(forwards its own IP) -> Google Cloud Run(Backend).
+    I was using x-forwarded-for to get the user IP. Ui sends the IP in this header to Vercel. The vercel sends the request to it's proxy server which then calls the backend. The backend receives the header 'x-forwarded-for' from the Vercel proxy server.
+    This resulted in Cloud run getting Vercel's proxy server's IP while Vercel sees the correct real client IP.
+    Since I am using rate limiting based on IP address(i.e. the keys contain the IP address), getting correct IP address in the backend is important. We want to use the real user IP and not the Vercel's proxy-server IP.
+
+    Solution:
+    1. Create a custom header and send it in the request.
+    2. Use the custom header to get the IP in the backend use it for all the IP based tasks.
+    */
+    const clientIp =
+      request.headers.get("x-vercel-forwarded-for") ??
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      request.headers.get("x-real-ip") ??
+      "";
+    const proxySecret = process.env.LOOPHOLIO_PROXY_SECRET;
+    if (!proxySecret) {
+      throw new Error("LOOPHOLIO_PROXY_SECRET is not configured");
+    }
+
     const formData = await request.formData();
     const file = formData.get("file") as File;
     const text = formData.get("text") as string;
@@ -59,6 +73,10 @@ export async function POST(request: NextRequest) {
             const aiResponse = await fetch(url, {
               method: "POST",
               body: formData,
+              headers: {
+                "x-loopholio-client-ip": clientIp,
+                "x-loopholio-proxy-secret": proxySecret,
+              },
             });
 
             // console.log("aiResponse: ", aiResponse);
