@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface UploadAreaProps {
-  onAnalyze: (file: File, text: string) => void;
+  onAnalyze: (text: string, file: File) => void;
   isLoading: boolean;
 }
 
@@ -104,15 +104,15 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
   const handleAnalyze = () => {
     console.log("handle analyze: upload area");
     if (fileInputRef.current?.files?.[0]) {
-      onAnalyze(fileInputRef.current.files[0], "");
+      onAnalyze("", fileInputRef.current.files[0]);
     } else if (text.trim()) {
       const textFile = new File([text], "pasted-text.txt", {
         type: "text/plain",
       });
-      onAnalyze(textFile, text);
+      onAnalyze(text, textFile);
     }
     setFileName(null);
-    fileInputRef.current = null;
+    // fileInputRef.current = null;
     setText("");
   };
 

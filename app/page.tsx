@@ -18,6 +18,7 @@ export default function Page() {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [viewFullText, setViewFullText] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   // Load history from localStorage on mount
@@ -56,14 +57,14 @@ export default function Page() {
     }
   }, [currentAnalysis]);
 
-  const handleAnalyze = async (file: File, text: string) => {
+  const handleAnalyze = async (text: string, file?: File) => {
     setIsLoading(true);
 
     const analysis: Analysis = {
       id: Date.now().toString(),
-      fileName: file.name,
+      fileName: file ? file.name : `${text.substring(0, 500)}...`,
       uploadedAt: new Date(),
-      documentPreview: text.substring(0, 100) || file.name,
+      documentPreview: text || "",
       riskLevels: [],
       overallRiskLevel: "Low",
       isStreaming: true,
@@ -75,7 +76,9 @@ export default function Page() {
     // Prepare form data for API call
     const formData = new FormData();
 
-    formData.append("file", file);
+    if (file) {
+      formData.append("file", file);
+    }
     if (text) {
       formData.append("text", text);
     }
@@ -123,6 +126,14 @@ export default function Page() {
                       ...prev,
                       title: data.content,
                       fileName: data.content,
+                    };
+                  });
+                } else if (data.type === "documentPreview") {
+                  setCurrentAnalysis((prev) => {
+                    if (!prev) return null;
+                    return {
+                      ...prev,
+                      documentPreview: data.content,
                     };
                   });
                 } else if (data.type === "status") {
@@ -323,6 +334,8 @@ export default function Page() {
         </div>
 
         {/* Content Area */}
+
+        {/* PREVIEW - File name in case of file and text in case of text input */}
         <div className="flex-1 overflow-y-auto pb-64 bg-[#0f0f0f]">
           {currentAnalysis && !currentAnalysis.isStreaming ? (
             // && currentAnalysis.riskLevels.length >= 0
@@ -331,17 +344,30 @@ export default function Page() {
                 <div className="flex items-center gap-3 p-4 rounded-xl bg-linear-to-r from-primary/10 to-primary/5 border border-primary/20">
                   <div className="flex-1">
                     <p className="text-sm font-medium text-foreground">
-                      {currentAnalysis.fileName}
+                      {viewFullText && currentAnalysis.documentPreview
+                        ? currentAnalysis.documentPreview
+                        : currentAnalysis.fileName}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Analysis completed{" : "}
-                      {new Date(currentAnalysis.uploadedAt).toLocaleString()}
-                    </p>
+
+                    <div className="flex justify-between mt-5">
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Analysis completed{" : "}
+                        {new Date(currentAnalysis.uploadedAt).toLocaleString()}
+                      </p>
+                      {/* We don't need the toggle button in case of files since there will ne no documentPreview available for it. */}
+                      {currentAnalysis.documentPreview && (
+                        <button
+                          className="text-emerald-500 hover:text-emerald-900"
+                          onClick={() => setViewFullText(!viewFullText)}
+                        >
+                          {viewFullText ? "view less" : "view more"}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <AnalysisDisplay
                   riskLevels={currentAnalysis.riskLevels}
-                  fileName={currentAnalysis.fileName}
                   isStreaming={currentAnalysis.isStreaming}
                   error={currentAnalysis.error}
                 />
@@ -368,17 +394,12 @@ export default function Page() {
               <Image
                 className="w-full rounded-xl opacity-80 min-w-100 min-h-50 max-w-200 max-h-100"
                 src="/images/no_analysis_dark_no_bg.png" // Maps directly to public/logo.png
-                // src="/images/history_banner.png" // Maps directly to public/logo.png
                 alt="Company Logo"
                 loading="eager"
                 width={800}
                 height={400}
                 style={{ width: "50%", height: "60%" }}
               />
-              {/* <div className="text-6xl mb-6 filter drop-shadow-lg">📋</div> */}
-              {/* <h2 className="text-3xl font-bold text-foreground mb-3">
-                No Analysis Yet
-              </h2> */}
               <p className="text-muted-foreground max-w-md text-center">
                 Upload a Terms of Service document or paste text below to
                 analyze key risks, clauses, and compliance issues

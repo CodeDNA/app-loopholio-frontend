@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     const encoder = new TextEncoder();
 
     // Generate title based on input
-    const title = text ? text : file?.name;
+    const title = text ? `${text.substring(0, 500)}` : file?.name;
 
     const stream = new ReadableStream({
       async start(controller) {
@@ -54,6 +54,15 @@ export async function POST(request: NextRequest) {
             controller.enqueue(
               encoder.encode(
                 `data: ${JSON.stringify({ type: "title", content: title })}\n`,
+              ),
+            );
+          }
+
+          // Send document preview in case of text input
+          if (text) {
+            controller.enqueue(
+              encoder.encode(
+                `data: ${JSON.stringify({ type: "documentPreview", content: text })}\n`,
               ),
             );
           }
