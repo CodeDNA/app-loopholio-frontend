@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     const encoder = new TextEncoder();
 
     // Generate title based on input
-    const title = text ? `${text.substring(0, 500)}` : file?.name;
+    const title = text ? `${text.substring(0, 100)}` : file?.name;
 
     const stream = new ReadableStream({
       async start(controller) {

@@ -62,7 +62,7 @@ export default function Page() {
 
     const analysis: Analysis = {
       id: Date.now().toString(),
-      fileName: file ? file.name : `${text.substring(0, 500)}...`,
+      fileName: file ? file.name : `${text.substring(0, 100)}`,
       uploadedAt: new Date(),
       documentPreview: text || "",
       riskLevels: [],
@@ -344,10 +344,11 @@ export default function Page() {
                 <div className="flex items-center gap-3 p-4 rounded-xl bg-linear-to-r from-primary/10 to-primary/5 border border-primary/20">
                   <div className="flex-1">
                     <p className="text-sm font-medium text-foreground">
-                      {viewFullText && currentAnalysis.documentPreview
+                      {viewFullText
                         ? currentAnalysis.documentPreview
-                        : currentAnalysis.fileName}
-                      {currentAnalysis.documentPreview && ` . . .`}
+                        : (currentAnalysis.documentPreview &&
+                            `${currentAnalysis.documentPreview.substring(0, 200)}...`) ||
+                          currentAnalysis.title}
                     </p>
 
                     <div className="flex justify-between mt-5">
