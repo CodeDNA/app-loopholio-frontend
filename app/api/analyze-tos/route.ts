@@ -143,6 +143,11 @@ export async function POST(request: NextRequest) {
                       }
                     } catch (e) {
                       console.error("Failed to parse SSE message:", e);
+                      controller.enqueue(
+                        encoder.encode(
+                          `data: ${JSON.stringify({ type: "error", content: "Failed to parse SSE message:" })}\n`,
+                        ),
+                      );
                     }
                   }
                 }
@@ -161,7 +166,9 @@ export async function POST(request: NextRequest) {
           } catch (aiError) {
             console.warn("Backend Response Error:", aiError);
             controller.enqueue(
-              encoder.encode(`data: ${JSON.stringify({ type: "ai_error" })}\n`),
+              encoder.encode(
+                `data: ${JSON.stringify({ type: "error", content: `Backend Response Error string: ${aiError}` })}\n`,
+              ),
             );
           }
 
@@ -172,6 +179,11 @@ export async function POST(request: NextRequest) {
           controller.close();
         } catch (error) {
           console.error("Stream error:", error);
+          controller.enqueue(
+            encoder.encode(
+              `data: ${JSON.stringify({ type: "error", content: `Stream error: ${error}` })}\n`,
+            ),
+          );
           controller.close();
         }
       },
