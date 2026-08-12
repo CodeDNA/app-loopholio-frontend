@@ -48,6 +48,7 @@ export function AnalysisDisplay({
   const mediumRisks = riskLevels.filter((r) => r.level === "Medium").length;
   const lowRisks = riskLevels.filter((r) => r.level === "Low").length;
   const [currentFilter, setCurrentFilter] = useState<FILTER>(FILTER.ALL);
+  const [viewFullText, setViewFullText] = useState(false);
 
   const filteredRiskLevels = riskLevels.filter((risk) => {
     if (currentFilter === FILTER.ALL) return true;
@@ -150,7 +151,7 @@ export function AnalysisDisplay({
               {/* Exact Clause */}
               <div>
                 <p className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider mb-2">
-                  Exact Clause
+                  Exact Clause from the section
                 </p>
                 <div className="rounded-lg p-3 border border-muted/20">
                   <p className="text-xs text-muted-foreground font-mono leading-relaxed italic">
@@ -161,15 +162,25 @@ export function AnalysisDisplay({
               {/* Source Text / Citation */}
               <div>
                 <p className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider mb-2">
-                  Source Text
+                  Source Section
                 </p>
                 <div className="rounded-lg p-3 border border-muted/20">
                   <p className="text-sm text-muted-foreground font-mono leading-relaxed italic">
                     {risk.section_title}
                   </p>
-                  <p className="text-xs text-muted-foreground font-mono leading-relaxed italic">
-                    {risk.source_text}
-                  </p>
+                  <div className="flex-col">
+                    <p className="text-xs text-muted-foreground font-mono leading-relaxed italic">
+                      {viewFullText
+                        ? risk.source_text
+                        : `${risk.source_text.substring(0, 200).trim()}...`}
+                    </p>
+                    <p
+                      className="flex justify-end text-emerald-500 hover:text-emerald-900"
+                      onClick={() => setViewFullText(!viewFullText)}
+                    >
+                      {viewFullText ? "view less" : "view more"}
+                    </p>
+                  </div>
                 </div>
               </div>
 

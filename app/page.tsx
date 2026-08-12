@@ -347,7 +347,7 @@ export default function Page() {
                       {viewFullText && currentAnalysis.documentPreview
                         ? currentAnalysis.documentPreview
                         : currentAnalysis.fileName}
-                      {currentAnalysis.documentPreview && ` ...`}
+                      {currentAnalysis.documentPreview && ` . . .`}
                     </p>
 
                     <div className="flex justify-between mt-5">
@@ -357,12 +357,12 @@ export default function Page() {
                       </p>
                       {/* We don't need the toggle button in case of files since there will ne no documentPreview available for it. */}
                       {currentAnalysis.documentPreview && (
-                        <button
+                        <p
                           className="text-emerald-500 hover:text-emerald-900"
                           onClick={() => setViewFullText(!viewFullText)}
                         >
                           {viewFullText ? "view less" : "view more"}
-                        </button>
+                        </p>
                       )}
                     </div>
                   </div>
