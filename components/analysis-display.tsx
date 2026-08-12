@@ -2,11 +2,19 @@
 
 import { RiskLevel } from "@/types/analysis";
 import { ErrorComponent } from "@/components/error_component";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 interface AnalysisDisplayProps {
   riskLevels: RiskLevel[];
-  fileName: string;
   isStreaming: boolean;
   error?: string;
+}
+
+enum FILTER {
+  ALL = "ALL",
+  HIGH = "HIGH",
+  MEDIUM = "MEDIUM",
+  LOW = "LOW",
 }
 
 function getRiskColor(level: "High" | "Medium" | "Low") {
@@ -39,6 +47,23 @@ export function AnalysisDisplay({
   const highRisks = riskLevels.filter((r) => r.level === "High").length;
   const mediumRisks = riskLevels.filter((r) => r.level === "Medium").length;
   const lowRisks = riskLevels.filter((r) => r.level === "Low").length;
+  const [currentFilter, setCurrentFilter] = useState<FILTER>(FILTER.ALL);
+
+  const filteredRiskLevels = riskLevels.filter((risk) => {
+    if (currentFilter === FILTER.ALL) return true;
+    if (currentFilter === FILTER.HIGH) return risk.level === "High";
+    if (currentFilter === FILTER.MEDIUM) return risk.level === "Medium";
+    if (currentFilter === FILTER.LOW) return risk.level === "Low";
+    return true;
+  });
+
+  const changeFilter = (selectedFilter: FILTER) => {
+    if (selectedFilter === currentFilter) {
+      setCurrentFilter(FILTER.ALL);
+      return;
+    }
+    setCurrentFilter(selectedFilter);
+  };
 
   const riskfoundComponent = (
     <div className="space-y-6">
@@ -47,19 +72,43 @@ export function AnalysisDisplay({
         {/* Summary Stats */}
         <div className="grid grid-cols-3 gap-3 mt-6">
           {highRisks > 0 && (
-            <div className="rounded-lg border border-red-500/30 p-3">
+            <div
+              onClick={() => changeFilter(FILTER.HIGH)}
+              className={cn(
+                "rounded-lg border border-red-500/30 p-3",
+                currentFilter === FILTER.HIGH
+                  ? "bg-red-500/30"
+                  : "hover:bg-red-500/10",
+              )}
+            >
               <p className="text-2xl font-bold text-red-400">{highRisks}</p>
               <p className="text-xs text-muted-foreground">High Risk</p>
             </div>
           )}
           {mediumRisks > 0 && (
-            <div className="rounded-lg border border-amber-500/30 p-3">
+            <div
+              onClick={() => changeFilter(FILTER.MEDIUM)}
+              className={cn(
+                "rounded-lg border border-amber-500/30 p-3",
+                currentFilter === FILTER.MEDIUM
+                  ? "bg-amber-500/30"
+                  : "hover:bg-amber-500/10",
+              )}
+            >
               <p className="text-2xl font-bold text-amber-400">{mediumRisks}</p>
               <p className="text-xs text-muted-foreground">Medium Risk</p>
             </div>
           )}
           {lowRisks > 0 && (
-            <div className="rounded-lg border border-emerald-500/30 p-3">
+            <div
+              onClick={() => changeFilter(FILTER.LOW)}
+              className={cn(
+                "rounded-lg border border-emerald-500/30 p-3",
+                currentFilter === FILTER.LOW
+                  ? "bg-emerald-500/30"
+                  : "hover:bg-emerald-500/10",
+              )}
+            >
               <p className="text-2xl font-bold text-emerald-400">{lowRisks}</p>
               <p className="text-xs text-muted-foreground">Low Risk</p>
             </div>
@@ -69,7 +118,7 @@ export function AnalysisDisplay({
 
       {/* Risk Items */}
       <div className="space-y-4">
-        {riskLevels.map((risk, index) => (
+        {filteredRiskLevels.map((risk, index) => (
           <div
             key={index}
             className={`border-2 rounded-2xl p-6 space-y-4 bg-transparent ${getRiskColor(risk.level)} animate-in fade-in slide-in-from-bottom-2`}

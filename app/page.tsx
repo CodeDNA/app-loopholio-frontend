@@ -367,6 +367,7 @@ export default function Page() {
                   </div>
                 </div>
                 <AnalysisDisplay
+                  key={currentAnalysis.id}
                   riskLevels={currentAnalysis.riskLevels}
                   isStreaming={currentAnalysis.isStreaming}
                   error={currentAnalysis.error}
