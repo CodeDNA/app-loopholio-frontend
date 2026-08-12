@@ -13,9 +13,11 @@ const MAX_FILE_SIZE_MB = 5;
 const MIN_TEXT_LENGTH = 100;
 const MAX_TEXT_LENGTH = 50000;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
-const FILE_SIZE_INSTRUCTION = `Max file size: ${MAX_FILE_SIZE_MB} MB | Min text length: ${MIN_TEXT_LENGTH} | Max text length: ${MAX_TEXT_LENGTH}`;
+const formatK = (num: number) => (num >= 1000 ? num / 1000 + "K" : num);
+
+const FILE_SIZE_INSTRUCTION = `Max file size: ${MAX_FILE_SIZE_MB} MB | Min text length: ${MIN_TEXT_LENGTH} | Max text length: ${formatK(MAX_TEXT_LENGTH)}`;
 const FILE_SIZE_ERROR_MESSAGE = `[ ERROR: Max file size exceeded! File must be smaller than ${MAX_FILE_SIZE_MB} Mb ]`;
-const MAX_TEXT_LENGTH_ERROR = `[ ERROR: Max allowed text length: ${MAX_TEXT_LENGTH} characters ]`;
+const MAX_TEXT_LENGTH_ERROR = `[ ERROR: Max allowed text length: ${formatK(MAX_TEXT_LENGTH)} characters ]`;
 
 export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -222,7 +224,7 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
       </div>
       <div className="flex justify-between items-centre">
         <div>
-          <p className="p-2 text-zinc-300">{FILE_SIZE_INSTRUCTION}</p>
+          <p className="p-2 text-muted-foreground">{FILE_SIZE_INSTRUCTION}</p>
           <p className="p-2 text-red-500 font-medium">{inputError}</p>
         </div>
         <p
@@ -238,7 +240,7 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
           {text.trim().length}/
           {text.trim().length < MIN_TEXT_LENGTH
             ? MIN_TEXT_LENGTH
-            : MAX_TEXT_LENGTH}
+            : formatK(MAX_TEXT_LENGTH)}
         </p>
       </div>
     </>

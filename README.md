@@ -1,5 +1,9 @@
 # LoopHolio - Terms of Service Analyzer - Implementation Guide
 
+# Current Veresion
+
+### v1.1.2
+
 ## Overview
 
 This is a dedicated UI for analyzing Terms of Service documents. Users can upload PDFs, DOCX, images-png/jpeg/jpg, or paste text, and the backend AI agent analyzes the content to identify key risks, clauses, and compliance issues.
