@@ -347,6 +347,7 @@ export default function Page() {
                       {viewFullText && currentAnalysis.documentPreview
                         ? currentAnalysis.documentPreview
                         : currentAnalysis.fileName}
+                      {currentAnalysis.documentPreview && ` ...`}
                     </p>
 
                     <div className="flex justify-between mt-5">
