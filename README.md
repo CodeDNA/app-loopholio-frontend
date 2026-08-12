@@ -1,8 +1,10 @@
 # LoopHolio - Terms of Service Analyzer - Implementation Guide
 
-# Current Veresion
+# Current Version
 
-### v1.1.2
+### v1.3
+
+Note: The UI reflects major versions(1.0). It doesn't reflect minor updates. This is by convention.
 
 ## Overview
 
@@ -147,3 +149,27 @@ To replace the sample API with your actual backend:
 ## localStorage Key
 
 History is persisted using the key: `tos_analysis_history`
+
+## VERSIONS
+
+v1.0
+
+- MVP working
+- UI successfully calls the backend and shows the result
+
+v1.1
+
+- Added Graphics
+- minor cosmetic changes
+- Added animations
+- Fixed bugs
+
+v1.2
+
+- Fixed bugs
+- Implemented Rate limiting IP Based
+- Implemented input guards - text length, file size check
+
+v1.3
+
+- Added filters for displayed risk based on risk levels

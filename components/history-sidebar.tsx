@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from "react";
 import { HistoryItem } from "@/types/analysis";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface HistorySidebarProps {
@@ -101,7 +100,7 @@ export function HistorySidebar({
             width={100}
             height={50}
           /> */}
-          <h1 className={cn("text-2xl text-primary")}>LoopHolio</h1>
+          <h1 className={cn("text-2xl text-primary")}>LoopHolio 1.0</h1>
         </div>
       </div>
 
