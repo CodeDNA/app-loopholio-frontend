@@ -117,7 +117,9 @@ export function HistorySideBarItem({
                   }}
                   className={cn(
                     "p-1 rounded hover:bg-primary/20 transition-all group-hover:opacity-100 text-muted-foreground hover:text-foreground",
-                    mobileView ? "opacity-100" : "opacity-0",
+                    mobileView || selectedId === item.id
+                      ? "opacity-100"
+                      : "opacity-0",
                   )}
                   title="More options"
                 >
