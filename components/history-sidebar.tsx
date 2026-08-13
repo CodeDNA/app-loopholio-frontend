@@ -5,6 +5,7 @@ import { HistoryItem } from "@/types/analysis";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ConnectionPill } from "@/components/connection-pill";
+import { ConnectionStatus } from "@/types/connection-status";
 
 interface HistorySidebarProps {
   items: HistoryItem[];
@@ -15,6 +16,7 @@ interface HistorySidebarProps {
   onRename?: (id: string, newName: string) => void;
   streaming?: boolean;
   mobileView?: boolean;
+  backendStatus: ConnectionStatus;
 }
 
 function getRiskBadge(level: "High" | "Medium" | "Low") {
@@ -35,6 +37,7 @@ export function HistorySidebar({
   onRename,
   streaming,
   mobileView,
+  backendStatus,
 }: HistorySidebarProps) {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [renamingId, setRenamingId] = useState<string | null>(null);
@@ -84,7 +87,7 @@ export function HistorySidebar({
           </div>
           <h1 className={cn("text-2xl text-primary")}>LoopHolio 1.0</h1>
         </div>
-        {!mobileView && <ConnectionPill />}
+        {!mobileView && <ConnectionPill backendStatus={backendStatus} />}
       </div>
 
       {/* Recents Header */}

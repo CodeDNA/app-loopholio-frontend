@@ -1,12 +1,15 @@
 import { ConnectionPill } from "@/components/connection-pill";
+import { ConnectionStatus } from "@/types/connection-status";
 
 interface HeaderMobileProps {
   sidebarOpen: boolean;
   setSidebarOpen: any;
+  backendStatus: ConnectionStatus;
 }
 export function HeaderMobile({
   setSidebarOpen,
   sidebarOpen,
+  backendStatus,
 }: HeaderMobileProps) {
   return (
     <>
@@ -35,7 +38,7 @@ export function HeaderMobile({
           <h1 className="text-lg font-bold text-primary">LoopHolio 1.0</h1>
         </div>
         <div className="w-10" />
-        <ConnectionPill />
+        <ConnectionPill backendStatus={backendStatus} />
       </div>
     </>
   );

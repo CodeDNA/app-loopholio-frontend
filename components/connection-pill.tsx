@@ -1,68 +1,41 @@
 "use client";
-
-import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-type ConnectionStatus = "checking" | "connected" | "disconnected";
+import { ConnectionStatus } from "@/types/connection-status";
 
 interface ConnectionPillProps {
-  pollIntervalMs?: number; // milliseconds
+  backendStatus: ConnectionStatus;
 }
 
-export function ConnectionPill({
-  pollIntervalMs = 10000,
-}: ConnectionPillProps) {
-  const [status, setStatus] = useState<ConnectionStatus>("checking");
-
-  useEffect(() => {
-    const checkHealth = async () => {
-      try {
-        const response = await fetch("/api/health", {
-          method: "GET",
-          cache: "no-store",
-        });
-
-        if (response.ok) {
-          setStatus("connected");
-        } else {
-          setStatus("disconnected");
-        }
-      } catch {
-        setStatus("disconnected");
-      }
-    };
-
-    checkHealth();
-    const interval = setInterval(checkHealth, pollIntervalMs);
-
-    // 3. Cleanup interval on unmount
-    return () => clearInterval(interval);
-  }, [pollIntervalMs]);
-
+export function ConnectionPill({ backendStatus }: ConnectionPillProps) {
   return (
     <div
       className={cn(
         "inline-flex items-center gap-2 p-2 rounded-full border text-xs font-medium transition-colors duration-300",
         {
           "bg-emerald-500/10 border-emerald-500/20 text-emerald-500":
-            status === "connected",
+            backendStatus === ConnectionStatus.CONNECTED,
           "bg-red-500/10 border-red-500/20 text-red-500":
-            status === "disconnected",
-          "bg-muted border-border text-muted-foreground": status === "checking",
+            backendStatus === ConnectionStatus.DISCONNECTED,
+          "bg-muted border-border text-muted-foreground":
+            backendStatus === ConnectionStatus.CHECKING,
         },
       )}
     >
-      {/* Connection Dot */}
+      {/* Connection status */}
       <div
         className={cn("w-2 h-2 rounded-full", {
-          "bg-emerald-500 animate-pulse": status === "connected",
-          "bg-red-500": status === "disconnected",
-          "bg-muted-foreground animate-pulse": status === "checking",
+          "bg-emerald-500 animate-pulse":
+            backendStatus === ConnectionStatus.CONNECTED,
+          "bg-red-500": backendStatus === ConnectionStatus.DISCONNECTED,
+          "bg-muted-foreground animate-pulse":
+            backendStatus === ConnectionStatus.CHECKING,
         })}
       />
 
-      {/* Connection status */}
       <span className="capitalize">
-        {status === "checking" ? "Connecting..." : status}
+        {backendStatus === ConnectionStatus.CHECKING
+          ? "Connecting..."
+          : backendStatus}
       </span>
     </div>
   );

@@ -1,4 +1,5 @@
 import { HistorySidebar } from "@/components/history-sidebar";
+import { ConnectionStatus } from "@/types/connection-status";
 
 interface HistoryWrapperProps {
   historyItems: any;
@@ -9,6 +10,7 @@ interface HistoryWrapperProps {
   handleDeleteItem: any;
   handleRenameItem: any;
   setSidebarOpen: any;
+  backendStatus: ConnectionStatus;
 }
 
 export function HistoryWrapper({
@@ -20,12 +22,14 @@ export function HistoryWrapper({
   handleDeleteItem,
   handleRenameItem,
   setSidebarOpen,
+  backendStatus,
 }: HistoryWrapperProps) {
   return (
     <>
       {/* WEB - History Sidebar */}
       <div className="hidden lg:block relative z-20 h-screen overflow-hidden">
         <HistorySidebar
+          backendStatus={backendStatus}
           mobileView={false}
           items={historyItems}
           selectedId={currentAnalysis?.id || null}
@@ -51,6 +55,7 @@ export function HistoryWrapper({
         }`}
       >
         <HistorySidebar
+          backendStatus={backendStatus}
           mobileView={true}
           items={historyItems}
           selectedId={currentAnalysis?.id || null}

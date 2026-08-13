@@ -7,6 +7,7 @@ import { HistoryWrapper } from "@/components/history";
 import { Analysis, HistoryItem, RiskLevel } from "@/types/analysis";
 import LiquidWaveSpinner from "@/components/ui/shadcn-space/spinner/spinner-10";
 import { HeaderMobile } from "@/components/header-mobile";
+import { ConnectionStatus } from "@/types/connection-status";
 import Image from "next/image";
 
 const STORAGE_KEY = "tos_analysis_history";
@@ -21,6 +22,65 @@ export default function Page() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [viewFullText, setViewFullText] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [backendStatus, setBackendStatus] = useState<ConnectionStatus>(
+    ConnectionStatus.CHECKING,
+  );
+  const POLL_INTERVAL_MS = 60000; // milliseconds
+
+  // Check backend connection status
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+    const checkHealth = async () => {
+      try {
+        const response = await fetch("/api/health", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        if (response.ok) {
+          setBackendStatus(ConnectionStatus.CONNECTED);
+        } else {
+          setBackendStatus(ConnectionStatus.DISCONNECTED);
+        }
+      } catch {
+        setBackendStatus(ConnectionStatus.DISCONNECTED);
+      }
+    };
+
+    const startPolling = () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+      checkHealth();
+      intervalId = setInterval(checkHealth, POLL_INTERVAL_MS);
+    };
+
+    const stopPolling = () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
+
+    // If the browser is not visible, stop polling to avoid un-necessary backend calls
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        startPolling();
+      } else {
+        stopPolling();
+      }
+    };
+
+    if (document.visibilityState === "visible") {
+      startPolling();
+    }
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      stopPolling();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [POLL_INTERVAL_MS]);
 
   // Load history from localStorage on mount
   useEffect(() => {
@@ -266,6 +326,7 @@ export default function Page() {
       </div>
 
       <HistoryWrapper
+        backendStatus={backendStatus}
         historyItems={historyItems}
         currentAnalysis={currentAnalysis}
         handleHistorySelect={handleHistorySelect}
@@ -277,7 +338,11 @@ export default function Page() {
       />
       {/* OLD CODE BACKUP STARTS HERE - SAVED IN HistoryWrapper Component(commented)*/}
 
-      <HeaderMobile sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <HeaderMobile
+        backendStatus={backendStatus}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
       {/* Main Result Content Area - Analysis Results*/}
       <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
         {/* PREVIEW + RISK ITEMS - File name in case of file and text in case of text input */}
