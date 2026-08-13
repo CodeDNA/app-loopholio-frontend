@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import { UploadArea } from "@/components/upload-area";
 import { AnalysisDisplay } from "@/components/analysis-display";
-import { HistorySidebar } from "@/components/history-sidebar";
+import { HistoryWrapper } from "@/components/history";
 import { Analysis, HistoryItem, RiskLevel } from "@/types/analysis";
 import LiquidWaveSpinner from "@/components/ui/shadcn-space/spinner/spinner-10";
-import { ConnectionPill } from "@/components/connection-pill";
+import { HeaderMobile } from "@/components/header-mobile";
 import Image from "next/image";
 
 const STORAGE_KEY = "tos_analysis_history";
@@ -264,82 +264,25 @@ export default function Page() {
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-10 animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-5" />
       </div>
-      {/* Sidebar - Hidden on mobile, visible on larger screens */}
-      <div className="hidden lg:block relative z-20 h-screen overflow-hidden">
-        <HistorySidebar
-          mobileView={false}
-          items={historyItems}
-          selectedId={currentAnalysis?.id || null}
-          onSelect={handleHistorySelect}
-          onClear={handleClearHistory}
-          onDelete={handleDeleteItem}
-          onRename={handleRenameItem}
-          streaming={currentAnalysis?.isStreaming}
-        />
-      </div>
-      {/* Mobile Sidebar Overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 lg:hidden z-30"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-      {/* Mobile Sidebar Drawer */}
-      <div
-        className={`fixed left-0 top-0 h-screen w-[20.8rem] bg-[#0f0f0f] border-r border-border z-40 lg:hidden transform transition-transform duration-300 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <HistorySidebar
-          mobileView={true}
-          items={historyItems}
-          selectedId={currentAnalysis?.id || null}
-          onSelect={(id) => {
-            handleHistorySelect(id);
-            setSidebarOpen(false);
-          }}
-          onClear={handleClearHistory}
-          onDelete={handleDeleteItem}
-          onRename={handleRenameItem}
-        />
-      </div>
 
-      {/* Main Content */}
+      <HistoryWrapper
+        historyItems={historyItems}
+        currentAnalysis={currentAnalysis}
+        handleHistorySelect={handleHistorySelect}
+        handleClearHistory={handleClearHistory}
+        handleDeleteItem={handleDeleteItem}
+        handleRenameItem={handleRenameItem}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
+      {/* OLD CODE BACKUP STARTS HERE - SAVED IN HistoryWrapper Component(commented)*/}
+
+      <HeaderMobile sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      {/* Main Result Content Area - Analysis Results*/}
       <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
-        {/* Mobile Header with Burger Menu */}
-        <div className="lg:hidden flex items-center justify-between px-4 py-4 bg-[#0f0f0f] border-b border-border/30 shrink-0">
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="h-10 w-10 flex items-center justify-center rounded-lg border border-border/50 hover:border-primary/50 hover:text-primary transition-all text-muted-foreground"
-            aria-label="Toggle menu"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-          <div className="flex-1 text-center">
-            <h1 className="text-lg font-bold text-primary">LoopHolio</h1>
-          </div>
-          <div className="w-10" />
-          <ConnectionPill />
-        </div>
-
-        {/* Content Area */}
-
-        {/* PREVIEW - File name in case of file and text in case of text input */}
-        <div className="flex-1 overflow-y-auto pb-64 bg-[#0f0f0f]">
+        {/* PREVIEW + RISK ITEMS - File name in case of file and text in case of text input */}
+        <div className="flex-1 overflow-y-auto pb-20 bg-[#0f0f0f]">
           {currentAnalysis && !currentAnalysis.isStreaming ? (
-            // && currentAnalysis.riskLevels.length >= 0
             <div className="max-w-3xl mx-auto px-6 py-8">
               <div className="space-y-6">
                 <div className="flex items-center gap-3 p-4 rounded-xl bg-linear-to-r from-primary/10 to-primary/5 border border-primary/20">
@@ -357,7 +300,7 @@ export default function Page() {
                         Analysis completed{" : "}
                         {new Date(currentAnalysis.uploadedAt).toLocaleString()}
                       </p>
-                      {/* We don't need the toggle button in case of files since there will ne no documentPreview available for it. */}
+                      {/* Toggle button is not reuired coz documentPreview is generated only for text input. */}
                       {currentAnalysis.documentPreview && (
                         <p
                           className="text-emerald-500 hover:text-emerald-900"
@@ -381,23 +324,19 @@ export default function Page() {
             <div className="max-w-3xl mx-auto px-6 py-8">
               <div className="text-center py-16">
                 <div className="inline-block">
-                  {/* <div className="w-16 h-16 rounded-full border-3 border-primary border-t-transparent animate-spin mb-6"></div> */}
                   <LiquidWaveSpinner
                     words={[currentStatus]}
                     size={"lg"}
                     interval={50}
                   />
                 </div>
-                {/* <h3 className="text-xl font-semibold text-foreground">
-                  {currentStatus}
-                </h3> */}
               </div>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full">
               <Image
                 className="w-full rounded-xl opacity-80 min-w-100 min-h-50 max-w-200 max-h-100"
-                src="/images/no_analysis_dark_no_bg.png" // Maps directly to public/logo.png
+                src="/images/no_analysis_dark_no_bg.png"
                 alt="Company Logo"
                 loading="eager"
                 width={800}
@@ -413,7 +352,7 @@ export default function Page() {
           <div ref={contentRef} />
         </div>
 
-        {/* Sticky Bottom Input */}
+        {/* INPUT AREA*/}
         <div className="sticky bottom-0 bg-[#0f0f0f] backdrop-blur-sm px-6 py-6 z-30">
           <div className="max-w-3xl mx-auto">
             <UploadArea onAnalyze={handleAnalyze} isLoading={isLoading} />
