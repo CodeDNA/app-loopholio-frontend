@@ -3,10 +3,12 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ConnectionStatus } from "@/types/connection-status";
 
 interface UploadAreaProps {
   onAnalyze: (text: string, file: File) => void;
   isLoading: boolean;
+  backendStatus: ConnectionStatus;
 }
 
 const MAX_FILE_SIZE_MB = 5;
@@ -19,7 +21,11 @@ const FILE_SIZE_INSTRUCTION = `Max file size: ${MAX_FILE_SIZE_MB} MB | Min text 
 const FILE_SIZE_ERROR_MESSAGE = `[ ERROR: Max file size exceeded! File must be smaller than ${MAX_FILE_SIZE_MB} Mb ]`;
 const MAX_TEXT_LENGTH_ERROR = `[ ERROR: Max allowed text length: ${formatK(MAX_TEXT_LENGTH)} characters ]`;
 
-export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
+export function UploadArea({
+  onAnalyze,
+  isLoading,
+  backendStatus,
+}: UploadAreaProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [text, setText] = useState("");
   const [fileName, setFileName] = useState<string | null>(null);
@@ -115,6 +121,18 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
     // fileInputRef.current = null;
     setText("");
   };
+
+  const nobackendcomponent = (
+    <div className="text-center border rounded-lg border-red-500 p-5 m-5 text-red-400 font-mono">
+      <p>Backend connectivity error!</p>
+      <p>Please refresh the page or try after some time.</p>
+      <p>You can still view your old analyses(if present).</p>
+    </div>
+  );
+
+  if (backendStatus != ConnectionStatus.CONNECTED) {
+    return nobackendcomponent;
+  }
 
   const hasContent = fileName || text.trim();
 

@@ -421,7 +421,11 @@ export default function Page() {
         {/* INPUT AREA*/}
         <div className="sticky bottom-0 bg-[#0f0f0f] backdrop-blur-sm px-6 z-30">
           <div className="max-w-3xl mx-auto">
-            <UploadArea onAnalyze={handleAnalyze} isLoading={isLoading} />
+            <UploadArea
+              onAnalyze={handleAnalyze}
+              isLoading={isLoading}
+              backendStatus={backendStatus}
+            />
           </div>
         </div>
       </div>
