@@ -225,7 +225,9 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
       <div className="flex justify-between items-centre">
         <div>
           <p className="p-2 text-muted-foreground">{FILE_SIZE_INSTRUCTION}</p>
-          <p className="p-2 text-red-500 font-medium">{inputError}</p>
+          {inputError && (
+            <p className="p-2 text-red-500 font-medium">{inputError}</p>
+          )}
         </div>
         <p
           className={cn(
