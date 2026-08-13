@@ -200,7 +200,7 @@ export function UploadArea({ onAnalyze, isLoading }: UploadAreaProps) {
             onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
-            placeholder="Paste ToS text or drag & drop a document..."
+            placeholder="Type text here or upload a file"
             disabled={isLoading}
             className="w-full h-10 bg-transparent px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 resize-none focus:outline-none disabled:opacity-50 overflow-y-auto"
             style={{ lineHeight: "1.5rem" }}

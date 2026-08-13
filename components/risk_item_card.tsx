@@ -57,7 +57,7 @@ export function RiskItemCard({ risk }: { risk: RiskLevel }) {
           </p>
           <div className="rounded-lg p-3 border border-muted/20">
             <p className="text-xs text-muted-foreground font-mono leading-relaxed italic">
-              {risk.exactClause}
+              "{risk.exactClause}"
             </p>
           </div>
         </div>
@@ -74,7 +74,7 @@ export function RiskItemCard({ risk }: { risk: RiskLevel }) {
               <p className="text-xs text-muted-foreground font-mono leading-relaxed italic">
                 {viewFullText
                   ? risk.source_text
-                  : `${risk.source_text.substring(0, 200).trim()}...`}
+                  : `${risk.source_text.substring(0, 100).trim()}...`}
               </p>
               <p
                 className="flex justify-end text-emerald-500 hover:text-emerald-900"
