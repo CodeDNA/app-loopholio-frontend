@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { HistoryItem } from "@/types/analysis";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ConnectionPill } from "@/components/connection-pill";
 
 interface HistorySidebarProps {
   items: HistoryItem[];
@@ -13,6 +14,7 @@ interface HistorySidebarProps {
   onDelete?: (id: string) => void;
   onRename?: (id: string, newName: string) => void;
   streaming?: boolean;
+  mobileView?: boolean;
 }
 
 function getRiskBadge(level: "High" | "Medium" | "Low") {
@@ -32,6 +34,7 @@ export function HistorySidebar({
   onDelete,
   onRename,
   streaming,
+  mobileView,
 }: HistorySidebarProps) {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [renamingId, setRenamingId] = useState<string | null>(null);
@@ -74,34 +77,14 @@ export function HistorySidebar({
   return (
     <div className="w-[20.8rem] border-r border-border bg-[#0f0f0f] flex flex-col h-screen overflow-hidden">
       {/* Top Header */}
-      <div className="px-4 py-4 shrink-0">
+      <div className="px-4 py-4 shrink-0 flex justify-between">
         <div className="flex items-center gap-2">
           <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary">
             <p>LH</p>
-            {/* <svg
-              className="w-5 h-5 text-white"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-            </svg> */}
           </div>
-          {/* <Image
-            className="rounded-xl opacity-90"
-            src="/images/no_analysis_dark_no_bg.png" // Maps directly to public/logo.png
-            alt="Company Logo"
-            width={100}
-            height={100}
-          /> */}
-          {/* <Image
-            className="rounded-xl opacity-90"
-            src="/images/history_banner.png" // Maps directly to public/logo.png
-            alt="Company Logo"
-            width={100}
-            height={50}
-          /> */}
           <h1 className={cn("text-2xl text-primary")}>LoopHolio 1.0</h1>
         </div>
+        {!mobileView && <ConnectionPill />}
       </div>
 
       {/* Recents Header */}

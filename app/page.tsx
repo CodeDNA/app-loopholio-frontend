@@ -6,6 +6,7 @@ import { AnalysisDisplay } from "@/components/analysis-display";
 import { HistorySidebar } from "@/components/history-sidebar";
 import { Analysis, HistoryItem, RiskLevel } from "@/types/analysis";
 import LiquidWaveSpinner from "@/components/ui/shadcn-space/spinner/spinner-10";
+import { ConnectionPill } from "@/components/connection-pill";
 import Image from "next/image";
 
 const STORAGE_KEY = "tos_analysis_history";
@@ -263,10 +264,10 @@ export default function Page() {
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-10 animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-5" />
       </div>
-
       {/* Sidebar - Hidden on mobile, visible on larger screens */}
       <div className="hidden lg:block relative z-20 h-screen overflow-hidden">
         <HistorySidebar
+          mobileView={false}
           items={historyItems}
           selectedId={currentAnalysis?.id || null}
           onSelect={handleHistorySelect}
@@ -276,7 +277,6 @@ export default function Page() {
           streaming={currentAnalysis?.isStreaming}
         />
       </div>
-
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div
@@ -284,7 +284,6 @@ export default function Page() {
           onClick={() => setSidebarOpen(false)}
         />
       )}
-
       {/* Mobile Sidebar Drawer */}
       <div
         className={`fixed left-0 top-0 h-screen w-[20.8rem] bg-[#0f0f0f] border-r border-border z-40 lg:hidden transform transition-transform duration-300 ${
@@ -292,6 +291,7 @@ export default function Page() {
         }`}
       >
         <HistorySidebar
+          mobileView={true}
           items={historyItems}
           selectedId={currentAnalysis?.id || null}
           onSelect={(id) => {
@@ -331,6 +331,7 @@ export default function Page() {
             <h1 className="text-lg font-bold text-primary">LoopHolio</h1>
           </div>
           <div className="w-10" />
+          <ConnectionPill />
         </div>
 
         {/* Content Area */}
