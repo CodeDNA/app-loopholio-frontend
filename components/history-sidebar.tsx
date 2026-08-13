@@ -120,6 +120,7 @@ export function HistorySidebar({
                 setNewName={setNewName}
                 setRenamingId={setRenamingId}
                 openMenuId={openMenuId}
+                mobileView={mobileView}
               />
             ))}
           </div>

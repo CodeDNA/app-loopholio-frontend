@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 
 interface HistorySideBarItemProps {
@@ -14,6 +15,7 @@ interface HistorySideBarItemProps {
   setNewName: any;
   setRenamingId: any;
   openMenuId: any;
+  mobileView?: boolean;
 }
 
 export function HistorySideBarItem({
@@ -30,6 +32,7 @@ export function HistorySideBarItem({
   setNewName,
   setRenamingId,
   openMenuId,
+  mobileView,
 }: HistorySideBarItemProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -112,7 +115,10 @@ export function HistorySideBarItem({
                     e.stopPropagation();
                     setOpenMenuId(openMenuId === item.id ? null : item.id);
                   }}
-                  className="p-1 rounded hover:bg-primary/20 transition-all opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-foreground"
+                  className={cn(
+                    "p-1 rounded hover:bg-primary/20 transition-all group-hover:opacity-100 text-muted-foreground hover:text-foreground",
+                    mobileView ? "opacity-100" : "opacity-0",
+                  )}
                   title="More options"
                 >
                   <svg
