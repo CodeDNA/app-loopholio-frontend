@@ -15,9 +15,9 @@ const STORAGE_KEY = "tos_analysis_history";
 export default function Page() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [currentAnalysis, setCurrentAnalysis] = useState<Analysis | null>(null);
-  const [currentStatus, setCurrentStatus] = useState<string>(
-    "Calling LoopHolio AI...",
-  );
+  const initialProcessStatus = "Calling LoopHolio AI...";
+  const [currentStatus, setCurrentStatus] =
+    useState<string>(initialProcessStatus);
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [viewFullText, setViewFullText] = useState(false);
@@ -256,6 +256,7 @@ export default function Page() {
       console.error("Error analyzing ToS:", error);
       alert("Failed to analyze document. Please try again.");
     } finally {
+      setCurrentStatus(initialProcessStatus);
       setIsLoading(false);
     }
   };
