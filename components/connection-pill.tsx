@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 type ConnectionStatus = "checking" | "connected" | "disconnected";
 
 interface ConnectionPillProps {
-  pollIntervalMs?: number; // seconds
+  pollIntervalMs?: number; // milliseconds
 }
 
 export function ConnectionPill({
@@ -20,12 +20,13 @@ export function ConnectionPill({
           method: "GET",
           cache: "no-store",
         });
+
         if (response.ok) {
           setStatus("connected");
         } else {
           setStatus("disconnected");
         }
-      } catch (error) {
+      } catch {
         setStatus("disconnected");
       }
     };
