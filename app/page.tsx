@@ -15,7 +15,7 @@ const STORAGE_KEY = "tos_analysis_history";
 export default function Page() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [currentAnalysis, setCurrentAnalysis] = useState<Analysis | null>(null);
-  const initialProcessStatus = "Calling LoopHolio AI...";
+  const initialProcessStatus = "Thinking...";
   const [currentStatus, setCurrentStatus] =
     useState<string>(initialProcessStatus);
   const [isLoading, setIsLoading] = useState(false);
