@@ -5,18 +5,12 @@ import { ErrorComponent } from "@/components/error_component";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { RiskItemCard } from "@/components/risk_item_card";
+import { FILTERS } from "@/types/filters";
 
 interface AnalysisDisplayProps {
   riskLevels: RiskLevel[];
   isStreaming: boolean;
   error?: string;
-}
-
-enum FILTER {
-  ALL = "ALL",
-  HIGH = "HIGH",
-  MEDIUM = "MEDIUM",
-  LOW = "LOW",
 }
 
 export function AnalysisDisplay({
@@ -27,19 +21,19 @@ export function AnalysisDisplay({
   const highRisks = riskLevels.filter((r) => r.level === "High").length;
   const mediumRisks = riskLevels.filter((r) => r.level === "Medium").length;
   const lowRisks = riskLevels.filter((r) => r.level === "Low").length;
-  const [currentFilter, setCurrentFilter] = useState<FILTER>(FILTER.ALL);
+  const [currentFilter, setCurrentFilter] = useState<FILTERS>(FILTERS.ALL);
 
   const filteredRiskLevels = riskLevels.filter((risk) => {
-    if (currentFilter === FILTER.ALL) return true;
-    if (currentFilter === FILTER.HIGH) return risk.level === "High";
-    if (currentFilter === FILTER.MEDIUM) return risk.level === "Medium";
-    if (currentFilter === FILTER.LOW) return risk.level === "Low";
+    if (currentFilter === FILTERS.ALL) return true;
+    if (currentFilter === FILTERS.HIGH) return risk.level === "High";
+    if (currentFilter === FILTERS.MEDIUM) return risk.level === "Medium";
+    if (currentFilter === FILTERS.LOW) return risk.level === "Low";
     return true;
   });
 
-  const changeFilter = (selectedFilter: FILTER) => {
+  const changeFilter = (selectedFilter: FILTERS) => {
     if (selectedFilter === currentFilter) {
-      setCurrentFilter(FILTER.ALL);
+      setCurrentFilter(FILTERS.ALL);
       return;
     }
     setCurrentFilter(selectedFilter);
@@ -53,10 +47,10 @@ export function AnalysisDisplay({
         <div className="grid grid-cols-3 gap-3 mt-6">
           {highRisks > 0 && (
             <div
-              onClick={() => changeFilter(FILTER.HIGH)}
+              onClick={() => changeFilter(FILTERS.HIGH)}
               className={cn(
                 "rounded-lg border border-red-500/30 p-3",
-                currentFilter === FILTER.HIGH
+                currentFilter === FILTERS.HIGH
                   ? "bg-red-500/30"
                   : "hover:bg-red-500/10",
               )}
@@ -67,10 +61,10 @@ export function AnalysisDisplay({
           )}
           {mediumRisks > 0 && (
             <div
-              onClick={() => changeFilter(FILTER.MEDIUM)}
+              onClick={() => changeFilter(FILTERS.MEDIUM)}
               className={cn(
                 "rounded-lg border border-amber-500/30 p-3",
-                currentFilter === FILTER.MEDIUM
+                currentFilter === FILTERS.MEDIUM
                   ? "bg-amber-500/30"
                   : "hover:bg-amber-500/10",
               )}
@@ -81,10 +75,10 @@ export function AnalysisDisplay({
           )}
           {lowRisks > 0 && (
             <div
-              onClick={() => changeFilter(FILTER.LOW)}
+              onClick={() => changeFilter(FILTERS.LOW)}
               className={cn(
                 "rounded-lg border border-emerald-500/30 p-3",
-                currentFilter === FILTER.LOW
+                currentFilter === FILTERS.LOW
                   ? "bg-emerald-500/30"
                   : "hover:bg-emerald-500/10",
               )}
