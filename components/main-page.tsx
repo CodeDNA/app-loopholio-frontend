@@ -9,11 +9,12 @@ import { Analysis, HistoryItem, RiskLevel } from "@/types/analysis";
 import LiquidWaveSpinner from "@/components/ui/shadcn-space/spinner/spinner-10";
 import { HeaderMobile } from "@/components/header-mobile";
 import { ConnectionStatus } from "@/types/connection-status";
-
+import { FEATURE_FLAGS_ENUM } from "@/flags/flags.enum";
 const STORAGE_KEY = "tos_analysis_history";
 interface MainPageProps {
   FEATURE_FLAGS: Record<string, any>;
 }
+
 export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [currentAnalysis, setCurrentAnalysis] = useState<Analysis | null>(null);
@@ -28,6 +29,9 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
     ConnectionStatus.CHECKING,
   );
   const POLL_INTERVAL_MS = 60000; // milliseconds
+  const scrollBehindUpload =
+    FEATURE_FLAGS[FEATURE_FLAGS_ENUM.feature_scroll_behind_UploadArea];
+  const backgroundRef = useRef<HTMLDivElement>(null);
 
   // Check backend connection status
   useEffect(() => {
@@ -119,6 +123,16 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
       );
     }
   }, [currentAnalysis]);
+
+  // Allows scrolling through the results even when the cursor is over the upload area
+  const handleForegroundWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
+    backgroundRef.current?.scrollBy({
+      top: event.deltaY,
+      left: event.deltaX,
+    });
+  };
 
   const handleAnalyze = async (text: string, file?: File) => {
     setIsLoading(true);
@@ -349,7 +363,10 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
       {/* Main Result Content Area - Analysis Results*/}
       <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
         {/* PREVIEW + RISK ITEMS - File name in case of file and text in case of text input */}
-        <div className="flex-1 overflow-y-auto pb-20 bg-[#0f0f0f]">
+        <div
+          ref={backgroundRef}
+          className="flex-1 overflow-y-auto pb-20 bg-[#0f0f0f]"
+        >
           {currentAnalysis && !currentAnalysis.isStreaming ? (
             // This div decides the max-width of the analyses container
             <div className="max-w-5xl mx-auto px-6 py-8">
@@ -369,7 +386,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
                         Analysis completed{" : "}
                         {new Date(currentAnalysis.uploadedAt).toLocaleString()}
                       </p>
-                      {/* Toggle button is not reuired coz documentPreview is generated only for text input. */}
+                      {/* Toggle button is only required in case of text input coz documentPreview is not generated only for file input. */}
                       {currentAnalysis.documentPreview && (
                         <p
                           className="text-emerald-500 hover:text-emerald-900"
@@ -422,7 +439,10 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         </div>
 
         {/* INPUT AREA*/}
-        <div className="sticky bottom-0 bg-[#0f0f0f] backdrop-blur-sm px-6 z-30">
+        <div
+          onWheel={scrollBehindUpload ? handleForegroundWheel : () => {}}
+          className="sticky bottom-0 bg-[#0f0f0f] backdrop-blur-sm px-6 z-30"
+        >
           <div className="max-w-3xl mx-auto">
             <UploadArea
               onAnalyze={handleAnalyze}
