@@ -349,7 +349,8 @@ export default function Page() {
         {/* PREVIEW + RISK ITEMS - File name in case of file and text in case of text input */}
         <div className="flex-1 overflow-y-auto pb-20 bg-[#0f0f0f]">
           {currentAnalysis && !currentAnalysis.isStreaming ? (
-            <div className="max-w-3xl mx-auto px-6 py-8">
+            // This div decides the max-width of the analyses container
+            <div className="max-w-5xl mx-auto px-6 py-8">
               <div className="space-y-6">
                 <div className="flex items-center gap-3 p-4 rounded-xl bg-linear-to-r from-primary/10 to-primary/5 border border-primary/20">
                   <div className="flex-1">
