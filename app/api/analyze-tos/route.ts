@@ -1,3 +1,4 @@
+import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -164,10 +165,12 @@ export async function POST(request: NextRequest) {
               );
             }
           } catch (aiError) {
+            const errorMessage =
+              aiError instanceof Error ? aiError.message : "Backend Error!";
             console.warn("Backend Response Error:", aiError);
             controller.enqueue(
               encoder.encode(
-                `data: ${JSON.stringify({ type: "error", content: `Backend Response Error string: ${aiError}` })}\n`,
+                `data: ${JSON.stringify({ type: "error", content: `Backend Error: ${errorMessage}` })}\n`,
               ),
             );
           }
