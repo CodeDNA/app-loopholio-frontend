@@ -126,6 +126,9 @@ export function UploadArea({
     <div className="text-center font-mono border rounded-lg bg-red-500/20 border-red-500 p-5 m-5 text-red-500">
       <p className="font-bold">BACKEND ERROR!</p>
       <p className="font-semibold">
+        Possibly due to cold start. It might take about 30 seconds to boot up.
+      </p>
+      <p className="font-semibold">
         Please refresh the page or try after some time.
       </p>
       <p className="font-semibold">
