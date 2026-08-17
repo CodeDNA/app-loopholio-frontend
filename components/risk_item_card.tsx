@@ -1,14 +1,16 @@
 import { RiskLevel } from "@/types/analysis";
 import { useState } from "react";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronUp } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { cn } from "@/lib/utils";
 
 export function RiskItemCard({ risk }: { risk: RiskLevel }) {
   const [viewFullText, setViewFullText] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   function getRiskColor(level: "High" | "Medium" | "Low") {
     switch (level) {
@@ -32,7 +34,7 @@ export function RiskItemCard({ risk }: { risk: RiskLevel }) {
     }
   }
   return (
-    <Collapsible defaultOpen={true}>
+    <Collapsible open={isOpen}>
       <div
         className={`border-2 rounded-2xl p-6 space-y-4 bg-transparent ${getRiskColor(risk.level)} animate-in fade-in slide-in-from-bottom-2`}
       >
@@ -53,7 +55,14 @@ export function RiskItemCard({ risk }: { risk: RiskLevel }) {
                 </span>
               </div>
               <CollapsibleTrigger>
-                <ChevronsUpDown />
+                <button onClick={() => setIsOpen(!isOpen)}>
+                  <ChevronUp
+                    className={cn(
+                      "hover:text-emerald-500",
+                      isOpen ? "rotate-0" : "rotate-180",
+                    )}
+                  />
+                </button>
               </CollapsibleTrigger>
             </div>
             <h3 className="text-lg font-bold text-foreground">
