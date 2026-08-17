@@ -9,7 +9,6 @@ import { Analysis, HistoryItem, RiskLevel } from "@/types/analysis";
 import LiquidWaveSpinner from "@/components/ui/shadcn-space/spinner/spinner-10";
 import { HeaderMobile } from "@/components/header-mobile";
 import { ConnectionStatus } from "@/types/connection-status";
-import { FEATURE_FLAGS_ENUM } from "@/flags/flags.enum";
 const STORAGE_KEY = "tos_analysis_history";
 interface MainPageProps {
   FEATURE_FLAGS: Record<string, any>;
@@ -29,8 +28,6 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
     ConnectionStatus.CHECKING,
   );
   const POLL_INTERVAL_MS = 60000; // milliseconds
-  const scrollBehindUpload =
-    FEATURE_FLAGS[FEATURE_FLAGS_ENUM.feature_scroll_behind_UploadArea];
   const backgroundRef = useRef<HTMLDivElement>(null);
 
   // Check backend connection status
@@ -440,7 +437,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
 
         {/* INPUT AREA*/}
         <div
-          onWheel={scrollBehindUpload ? handleForegroundWheel : () => {}}
+          onWheel={handleForegroundWheel}
           className="sticky bottom-0 bg-[#0f0f0f] backdrop-blur-sm px-6 z-30"
         >
           <div className="max-w-3xl mx-auto">
