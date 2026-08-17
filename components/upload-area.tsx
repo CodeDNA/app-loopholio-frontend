@@ -123,10 +123,14 @@ export function UploadArea({
   };
 
   const nobackendcomponent = (
-    <div className="text-center border rounded-lg border-red-500 p-5 m-5 text-red-400 font-mono">
-      <p>Backend connectivity error!</p>
-      <p>Please refresh the page or try after some time.</p>
-      <p>You can still view your old analyses(if present).</p>
+    <div className="text-center font-mono border rounded-lg bg-red-500/20 border-red-500 p-5 m-5 text-red-500">
+      <p className="font-bold">BACKEND ERROR!</p>
+      <p className="font-semibold">
+        Please refresh the page or try after some time.
+      </p>
+      <p className="font-semibold">
+        You can still view your old analyses(if present).
+      </p>
     </div>
   );
 
