@@ -27,7 +27,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
   const [backendStatus, setBackendStatus] = useState<ConnectionStatus>(
     ConnectionStatus.CHECKING,
   );
-  const POLL_INTERVAL_MS = 60000; // milliseconds
+  const POLL_INTERVAL_MS = 30000; // milliseconds
   const backgroundRef = useRef<HTMLDivElement>(null);
 
   // Check backend connection status

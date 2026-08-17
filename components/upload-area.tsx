@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ConnectionStatus } from "@/types/connection-status";
+import { Spinner } from "@/components/ui/spinner";
 
 interface UploadAreaProps {
   onAnalyze: (text: string, file: File) => void;
@@ -122,20 +123,28 @@ export function UploadArea({
     setText("");
   };
 
-  const nobackendcomponent = (
-    <div className="text-center font-mono border rounded-lg bg-red-500/20 border-red-500 p-5 m-5 text-red-500">
-      <p className="font-bold">BACKEND ERROR!</p>
-      <p className="font-semibold">
-        Possibly due to cold start. It might take about 30 seconds to boot up.
-      </p>
-      <p className="font-semibold">
-        Please refresh the page or try after some time.
-      </p>
-      <p className="font-semibold">
-        You can still view your old analyses(if present).
-      </p>
-    </div>
-  );
+  const nobackendcomponent =
+    backendStatus == ConnectionStatus.DISCONNECTED ? (
+      <div className="text-center font-mono border rounded-lg bg-red-500/20 border-red-500 p-5 m-5 text-red-500">
+        <p className="font-bold">BACKEND ERROR!</p>
+        <p className="font-semibold">
+          Possibly due to cold start. It might take about 30 seconds to boot.
+        </p>
+        <p className="font-semibold">
+          Please refresh the page or try after some time.
+        </p>
+        <p className="font-semibold">
+          You can still view your old analyses(if present).
+        </p>
+      </div>
+    ) : (
+      <div className="font-mono text-xl border rounded-lg bg-gray-500/20 border-gray-500 p-5 m-5 text-white">
+        <div className="flex text-muted-foreground justify-center items-center gap-4">
+          <p>Connecting</p>
+          <Spinner className="size-5" />
+        </div>
+      </div>
+    );
 
   if (backendStatus != ConnectionStatus.CONNECTED) {
     return nobackendcomponent;

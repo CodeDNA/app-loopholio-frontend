@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { ConnectionStatus } from "@/types/connection-status";
+import { Spinner } from "@/components/ui/spinner";
 
 interface ConnectionPillProps {
   backendStatus: ConnectionStatus;
@@ -22,20 +23,24 @@ export function ConnectionPill({ backendStatus }: ConnectionPillProps) {
       )}
     >
       {/* Connection status */}
-      <div
-        className={cn("w-2 h-2 rounded-full", {
-          "bg-emerald-500 animate-pulse":
-            backendStatus === ConnectionStatus.CONNECTED,
-          "bg-red-500": backendStatus === ConnectionStatus.DISCONNECTED,
-          "bg-muted-foreground animate-pulse":
-            backendStatus === ConnectionStatus.CHECKING,
-        })}
-      />
+      {backendStatus != ConnectionStatus.CHECKING && (
+        <div
+          className={cn("w-2 h-2 rounded-full", {
+            "bg-emerald-500 animate-pulse":
+              backendStatus === ConnectionStatus.CONNECTED,
+            "bg-red-500": backendStatus === ConnectionStatus.DISCONNECTED,
+          })}
+        />
+      )}
 
       <span className="capitalize">
-        {backendStatus === ConnectionStatus.CHECKING
-          ? "Connecting..."
-          : backendStatus}
+        {backendStatus === ConnectionStatus.CHECKING ? (
+          <span className="flex gap-1">
+            Connecting <Spinner />
+          </span>
+        ) : (
+          backendStatus
+        )}
       </span>
     </div>
   );
