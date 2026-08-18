@@ -97,8 +97,8 @@ export function HistorySidebar({
                 No Analysis Yet
               </h3>
               <h2>
-                Upload a Terms of Service document or paste text in the textbox
-                to analyze key risks, clauses, and compliance issues.
+                Upload a Terms of Service document or paste text/url in the
+                textbox to analyze key risks, clauses, and compliance issues.
               </h2>
             </div>
           </div>

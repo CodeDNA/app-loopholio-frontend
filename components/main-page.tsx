@@ -431,7 +431,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
                 style={{ width: "50%", height: "60%" }}
               />
               <p className="text-muted-foreground max-w-md text-center">
-                Upload a Terms of Service document or paste text below to
+                Upload a Terms of Service document or paste text/url below to
                 analyze key risks, clauses, and compliance issues
               </p>
             </div>
