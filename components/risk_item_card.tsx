@@ -54,14 +54,20 @@ export function RiskItemCard({ risk }: { risk: RiskLevel }) {
                   Confidence: {risk.confidence}%
                 </span>
               </div>
-              <CollapsibleTrigger>
-                <ChevronUp
+              <CollapsibleTrigger className="text-emerald-500 hover:text-emerald-900">
+                {!isOpen && (
+                  <span onClick={() => setIsOpen(!isOpen)}>view more</span>
+                )}
+                {isOpen && (
+                  <span onClick={() => setIsOpen(!isOpen)}>view less</span>
+                )}
+                {/* <ChevronUp
                   onClick={() => setIsOpen(!isOpen)}
                   className={cn(
                     "hover:text-emerald-500",
                     isOpen ? "rotate-0" : "rotate-180",
                   )}
-                />
+                /> */}
               </CollapsibleTrigger>
             </div>
             <h3 className="text-lg font-bold text-foreground">
