@@ -259,8 +259,8 @@ export function UploadArea({
               onDrop={handleDrop}
               placeholder={
                 isTextOrURL === TEXT_INPUT_TYPE.TEXT
-                  ? "Type text here"
-                  : "Paste a url"
+                  ? "Type/paste the text you want to analyze"
+                  : "Type/paste the Url that contains text you want to analyze"
               }
               disabled={isLoading}
               className={`${inputClasses} min-h-10 resize-none overflow-y-auto`}
