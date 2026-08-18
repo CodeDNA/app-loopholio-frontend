@@ -257,11 +257,7 @@ export function UploadArea({
               onDragLeave={handleDragLeave}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              placeholder={
-                isTextOrURL === TEXT_INPUT_TYPE.TEXT
-                  ? "Type/paste the text you want to analyze"
-                  : "Type/paste the Url that contains text you want to analyze"
-              }
+              placeholder="Type/paste the text you want to analyze"
               disabled={isLoading}
               className={`${inputClasses} min-h-10 resize-none overflow-y-auto`}
             />
@@ -272,7 +268,7 @@ export function UploadArea({
               onChange={handleUrlChange}
               type="url"
               className={inputClasses}
-              placeholder="Paste URL"
+              placeholder="Type/paste Url that contains the text you want to analyze"
             />
           )}
         </div>
@@ -316,29 +312,33 @@ export function UploadArea({
           )}
         </Button>
       </div>
-      <div className="flex justify-between items-centre">
-        <div>
-          <p className="p-2 text-muted-foreground">{FILE_SIZE_INSTRUCTION}</p>
-          {inputError && (
-            <p className="p-2 text-red-500 font-medium">{inputError}</p>
-          )}
+      {isTextOrURL == TEXT_INPUT_TYPE.TEXT && (
+        <div className="flex justify-between items-centre">
+          <div>
+            <p className="p-2 text-sm text-foreground">
+              {FILE_SIZE_INSTRUCTION}
+            </p>
+            {inputError && (
+              <p className="p-2 text-red-500 font-medium">{inputError}</p>
+            )}
+          </div>
+          <p
+            className={cn(
+              "pr-2",
+              text.trim().length >= MIN_TEXT_LENGTH
+                ? text.trim().length > MAX_TEXT_LENGTH
+                  ? "text-red-500"
+                  : "text-teal-500"
+                : "text-zinc-700",
+            )}
+          >
+            {text.trim().length}/
+            {text.trim().length < MIN_TEXT_LENGTH
+              ? MIN_TEXT_LENGTH
+              : formatK(MAX_TEXT_LENGTH)}
+          </p>
         </div>
-        <p
-          className={cn(
-            "pr-2",
-            text.trim().length >= MIN_TEXT_LENGTH
-              ? text.trim().length > MAX_TEXT_LENGTH
-                ? "text-red-500"
-                : "text-teal-500"
-              : "text-zinc-700",
-          )}
-        >
-          {text.trim().length}/
-          {text.trim().length < MIN_TEXT_LENGTH
-            ? MIN_TEXT_LENGTH
-            : formatK(MAX_TEXT_LENGTH)}
-        </p>
-      </div>
+      )}
     </>
   );
 }
