@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ConnectionStatus } from "@/types/connection-status";
 import { Spinner } from "@/components/ui/spinner";
-
+import { SelectComponent } from "@/components/ui/custom/select-component";
+import { TEXT_INPUT_TYPE } from "@/types/text-input-type.enum";
 interface UploadAreaProps {
-  onAnalyze: (text: string, file: File) => void;
+  onAnalyze: (text: string, isUrl: boolean, file?: File) => void;
   isLoading: boolean;
   backendStatus: ConnectionStatus;
 }
@@ -33,6 +34,14 @@ export function UploadArea({
   const dragCounter = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
   const [inputError, setInputError] = useState<string>("");
+  const [isTextOrURL, setIsTextOrURL] = useState<TEXT_INPUT_TYPE>(
+    TEXT_INPUT_TYPE.TEXT,
+  );
+  const [url, setUrl] = useState("");
+  const items = [
+    { value: TEXT_INPUT_TYPE.TEXT, label: "Text" },
+    { value: TEXT_INPUT_TYPE.URL, label: "Url" },
+  ];
 
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault();
@@ -88,10 +97,10 @@ export function UploadArea({
 
     setFileName(file.name);
     setText("");
+    setUrl("");
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("FILE CHANGED");
     if (e.target.files?.[0]) {
       handleFile(e.target.files[0]);
     }
@@ -101,26 +110,38 @@ export function UploadArea({
     if (!fileName) {
       setText(e.target.value);
     }
-    if (e.target.value.length > MAX_TEXT_LENGTH) {
+    if (
+      isTextOrURL === TEXT_INPUT_TYPE.TEXT &&
+      e.target.value.length > MAX_TEXT_LENGTH
+    ) {
       setInputError(MAX_TEXT_LENGTH_ERROR);
     } else {
       setInputError("");
     }
   };
 
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length) {
+      setUrl(e.target.value);
+    } else {
+      setUrl("");
+    }
+  };
+
   const handleAnalyze = () => {
     console.log("handle analyze: upload area");
-    if (fileInputRef.current?.files?.[0]) {
-      onAnalyze("", fileInputRef.current.files[0]);
-    } else if (text.trim()) {
-      const textFile = new File([text], "pasted-text.txt", {
-        type: "text/plain",
-      });
-      onAnalyze(text, textFile);
+    if (fileName) {
+      if (fileInputRef.current?.files?.[0]) {
+        onAnalyze("", false, fileInputRef.current.files[0]);
+      }
+    } else if (isTextOrURL === TEXT_INPUT_TYPE.TEXT && text.trim()) {
+      onAnalyze(text, false);
+    } else if (isTextOrURL === TEXT_INPUT_TYPE.URL && url.trim()) {
+      onAnalyze(url, true);
     }
     setFileName(null);
-    // fileInputRef.current = null;
     setText("");
+    setUrl("");
   };
 
   const nobackendcomponent =
@@ -151,6 +172,8 @@ export function UploadArea({
   }
 
   const hasContent = fileName || text.trim();
+  const inputClasses =
+    "block box-border w-full h-10 bg-transparent px-4 py-2 text-sm leading-6 text-foreground placeholder:text-muted-foreground/60 focus:outline-none disabled:opacity-50";
 
   return (
     <>
@@ -165,7 +188,7 @@ export function UploadArea({
           disabled={isLoading}
         />
 
-        {/* Plus button to upload files */}
+        {/* Plus button to upload files +-button*/}
         {!fileName && (
           <button
             onClick={() => fileInputRef.current?.click()}
@@ -189,7 +212,7 @@ export function UploadArea({
           </button>
         )}
 
-        {/* Clear file button (if file selected) */}
+        {/* Clear file button (if file selected) X-button*/}
         {fileName && (
           <button
             onClick={() => {
@@ -222,29 +245,66 @@ export function UploadArea({
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-          className={`flex-1 transition-all duration-200 ${
+          className={`flex-1 items-center justify-center transition-all duration-200 ${
             isDragging ? "bg-primary/5" : ""
           }`}
         >
-          <textarea
-            value={fileName ? `File: ${fileName}` : text}
-            // onChange={(e) => !fileName && setText(e.target.value)}
-            onChange={handleTextChange}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            placeholder="Type text here or upload a file"
-            disabled={isLoading}
-            className="w-full h-10 bg-transparent px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 resize-none focus:outline-none disabled:opacity-50 overflow-y-auto"
-            style={{ lineHeight: "1.5rem" }}
+          {isTextOrURL === TEXT_INPUT_TYPE.TEXT && (
+            <textarea
+              value={fileName ? `File: ${fileName}` : text}
+              onChange={handleTextChange}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              placeholder={
+                isTextOrURL === TEXT_INPUT_TYPE.TEXT
+                  ? "Type text here"
+                  : "Paste a url"
+              }
+              disabled={isLoading}
+              className={`${inputClasses} min-h-10 resize-none overflow-y-auto`}
+            />
+          )}
+          {isTextOrURL === TEXT_INPUT_TYPE.URL && (
+            <input
+              value={fileName ? `File: ${fileName}` : url}
+              onChange={handleUrlChange}
+              type="url"
+              className={inputClasses}
+              placeholder="Paste URL"
+            />
+          )}
+        </div>
+
+        {/* Select component */}
+        <div className="bg-transparent text-muted-foreground hover:text-teal-500 font-semibold mr-1">
+          <SelectComponent
+            selectedValue={isTextOrURL}
+            items={items}
+            onValueChange={(val: TEXT_INPUT_TYPE) => {
+              if (val == TEXT_INPUT_TYPE.URL) {
+                setText("");
+                setFileName(null);
+              } else {
+                setUrl("");
+              }
+              setIsTextOrURL(val);
+            }}
           />
         </div>
 
         {/* Send button */}
         <Button
           onClick={handleAnalyze}
-          disabled={!hasContent || isLoading || inputError != ""}
+          // disabled={
+          //   isTextOrURL === "text"
+          //     ? !hasContent ||
+          //       isLoading ||
+          //       inputError != "" ||
+          //       text.length < MIN_TEXT_LENGTH
+          //     : false
+          // }
           className="h-10 px-4 bg-teal-500 hover:bg-teal-700 text-white font-semibold rounded-r-2xl transition-all shrink-0"
         >
           {isLoading ? (

@@ -27,7 +27,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
   const [backendStatus, setBackendStatus] = useState<ConnectionStatus>(
     ConnectionStatus.CHECKING,
   );
-  const POLL_INTERVAL_MS = 30000; // milliseconds
+  const POLL_INTERVAL_MS = 60000; // milliseconds
   const backgroundRef = useRef<HTMLDivElement>(null);
 
   // Check backend connection status
@@ -131,7 +131,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
     });
   };
 
-  const handleAnalyze = async (text: string, file?: File) => {
+  const handleAnalyze = async (text: string, isURL: boolean, file?: File) => {
     setIsLoading(true);
 
     const analysis: Analysis = {
@@ -155,6 +155,10 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
     }
     if (text) {
       formData.append("text", text);
+    }
+    if (isURL) {
+      formData.append("text", text); //contains the url
+      formData.append("isURL", `${isURL}`); // isurl = true/false
     }
     console.log("**********FORM DATA: PAGE.TSX **********");
     console.log(formData);

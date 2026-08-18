@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const file = formData.get("file") as File;
     const text = formData.get("text") as string;
+    const isURL = formData.get("isURL") as string;
 
     if (!file && !text) {
       return NextResponse.json(
@@ -72,6 +73,7 @@ export async function POST(request: NextRequest) {
           let risks: any[] = [];
           let url = `${process.env.LOOPHOLIO_BACKEND_API_URL}/analyze-document`;
           const formData = new FormData();
+          formData.append("isURL", isURL);
           if (tosText && tosText.trim() !== "") {
             formData.append("tosText", tosText);
           } else if (file) {
@@ -79,7 +81,6 @@ export async function POST(request: NextRequest) {
           }
 
           try {
-            // console.log("Calling backend FAST APAPI...");
             const aiResponse = await fetch(url, {
               method: "POST",
               body: formData,
