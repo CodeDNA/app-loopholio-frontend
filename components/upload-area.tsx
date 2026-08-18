@@ -257,7 +257,7 @@ export function UploadArea({
               onDragLeave={handleDragLeave}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              placeholder="Type/paste the text you want to analyze"
+              placeholder="Type/paste text"
               disabled={isLoading}
               className={`${inputClasses} min-h-10 resize-none overflow-y-auto`}
             />
@@ -268,7 +268,7 @@ export function UploadArea({
               onChange={handleUrlChange}
               type="url"
               className={inputClasses}
-              placeholder="Type/paste Url that contains the text you want to analyze"
+              placeholder="Type/paste Url"
             />
           )}
         </div>
