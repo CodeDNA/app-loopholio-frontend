@@ -9,6 +9,13 @@ import { Analysis, HistoryItem, RiskLevel } from "@/types/analysis";
 import LiquidWaveSpinner from "@/components/ui/shadcn-space/spinner/spinner-10";
 import { HeaderMobile } from "@/components/header-mobile";
 import { ConnectionStatus } from "@/types/connection-status";
+import {
+  Progress,
+  ProgressLabel,
+  ProgressValue,
+} from "@/components/ui/progress";
+import { Spinner } from "./ui/spinner";
+
 const STORAGE_KEY = "tos_analysis_history";
 interface MainPageProps {
   FEATURE_FLAGS: Record<string, any>;
@@ -27,6 +34,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
   const [backendStatus, setBackendStatus] = useState<ConnectionStatus>(
     ConnectionStatus.CHECKING,
   );
+  const [analysisProgress, setAnalysisProgress] = useState<number>(1);
   const POLL_INTERVAL_MS = 60000; // milliseconds
   const backgroundRef = useRef<HTMLDivElement>(null);
 
@@ -121,6 +129,32 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
     }
   }, [currentAnalysis]);
 
+  useEffect(() => {
+    switch (currentStatus) {
+      case "Processing your text...":
+        setAnalysisProgress(7);
+        break;
+      case "Processing your file...":
+        setAnalysisProgress(7);
+        break;
+      case "Executing agent pipeline...":
+        setAnalysisProgress(10);
+        break;
+      case "Extracting clauses...":
+        setAnalysisProgress(15);
+        break;
+      case "Analyzing Risks...":
+        setAnalysisProgress(30);
+        break;
+      case "Generating explanations...":
+        setAnalysisProgress(60);
+        break;
+      case "Preparing Report...":
+        setAnalysisProgress(90);
+        break;
+    }
+    return () => setAnalysisProgress(0);
+  }, [currentStatus]);
   // Allows scrolling through the results even when the cursor is over the upload area
   const handleForegroundWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -354,7 +388,6 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />
-      {/* OLD CODE BACKUP STARTS HERE - SAVED IN HistoryWrapper Component(commented)*/}
 
       <HeaderMobile
         backendStatus={backendStatus}
@@ -408,14 +441,22 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
               </div>
             </div>
           ) : currentAnalysis && currentAnalysis.isStreaming ? (
-            <div className="max-w-3xl mx-auto px-6 py-8">
+            <div className="max-w-3xl mx-auto px-6 py-8 items-center justify-center">
               <div className="text-center py-16">
-                <div className="inline-block">
+                <div className="flex-row">
                   <LiquidWaveSpinner
-                    words={[currentStatus]}
+                    words={["Processing..."]}
                     size={"lg"}
                     interval={50}
                   />
+                  <Progress className="w-full" value={analysisProgress}>
+                    <ProgressLabel className="flex gap-1 items-center text-emerald-500">
+                      <Spinner />
+                      {currentStatus}
+                    </ProgressLabel>
+                    <ProgressValue className="text-emerald-500" />
+                  </Progress>
+                  {/* <p>{analysisProgress}%</p> */}
                 </div>
               </div>
             </div>
