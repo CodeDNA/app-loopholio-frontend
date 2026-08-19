@@ -129,7 +129,7 @@ export function UploadArea({
   };
 
   const handleAnalyze = () => {
-    console.log("handle analyze: upload area");
+    // console.log("handle analyze: upload area");
     if (fileName) {
       if (fileInputRef.current?.files?.[0]) {
         onAnalyze("", false, fileInputRef.current.files[0]);
