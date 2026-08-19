@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ConnectionStatus } from "@/types/connection-status";
@@ -19,7 +19,7 @@ const MAX_TEXT_LENGTH = 50000;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 const formatK = (num: number) => (num >= 1000 ? num / 1000 + "K" : num);
 
-const FILE_SIZE_INSTRUCTION = `Max file size: ${MAX_FILE_SIZE_MB} MB | Min text length: ${MIN_TEXT_LENGTH} | Max text length: ${formatK(MAX_TEXT_LENGTH)}`;
+const FILE_SIZE_INSTRUCTION = `Max file size: ${MAX_FILE_SIZE_MB} MB | Text length: Min - ${MIN_TEXT_LENGTH}, Max - ${formatK(MAX_TEXT_LENGTH)}`;
 const FILE_SIZE_ERROR_MESSAGE = `[ ERROR: Max file size exceeded! File must be smaller than ${MAX_FILE_SIZE_MB} Mb ]`;
 const MAX_TEXT_LENGTH_ERROR = `[ ERROR: Max allowed text length: ${formatK(MAX_TEXT_LENGTH)} characters ]`;
 
@@ -144,6 +144,57 @@ export function UploadArea({
     setUrl("");
   };
 
+  useEffect(() => {
+    if (url === "") {
+      setInputError("");
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      if (!isValidUrl(url)) {
+        setInputError("Please enter a valid URL ex. https://google.com");
+      } else {
+        setInputError("");
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [url]);
+
+  const isValidUrl = (str: string): boolean => {
+    // * must contain '//' in the url
+    if (!str.includes("//")) {
+      return false;
+    }
+
+    // * check structure
+    if (!URL.canParse(str)) {
+      return false;
+    }
+
+    const url = new URL(str);
+
+    // * accept only http and https protocol
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return false;
+    }
+
+    const host = url.hostname;
+
+    // * ensures there is at least one dot, and it isn't at the very start/end
+    if (!host.includes(".") || host.startsWith(".") || host.endsWith(".")) {
+      return false;
+    }
+
+    // * must contain atleast one '.' (two words)
+    const parts = host.split(".");
+    const tld = parts[parts.length - 1];
+    if (tld.length < 2) {
+      return false;
+    }
+
+    return true;
+  };
+
   const nobackendcomponent =
     backendStatus == ConnectionStatus.DISCONNECTED ? (
       <div className="text-center font-mono border rounded-lg bg-red-500/20 border-red-500 p-5 m-5 text-red-500">
@@ -171,7 +222,7 @@ export function UploadArea({
     return nobackendcomponent;
   }
 
-  const hasContent = fileName || text.trim();
+  const hasContent = fileName || text.trim() || url;
   const inputClasses =
     "block box-border w-full h-10 bg-transparent px-4 py-2 text-sm leading-6 text-foreground placeholder:text-muted-foreground/60 focus:outline-none disabled:opacity-50";
 
@@ -293,14 +344,12 @@ export function UploadArea({
         {/* Send button */}
         <Button
           onClick={handleAnalyze}
-          // disabled={
-          //   isTextOrURL === "text"
-          //     ? !hasContent ||
-          //       isLoading ||
-          //       inputError != "" ||
-          //       text.length < MIN_TEXT_LENGTH
-          //     : false
-          // }
+          disabled={
+            !hasContent ||
+            !!inputError ||
+            (isTextOrURL == TEXT_INPUT_TYPE.TEXT &&
+              text.length < MIN_TEXT_LENGTH)
+          }
           className="h-10 px-4 bg-teal-500 hover:bg-teal-700 text-white font-semibold rounded-r-2xl transition-all shrink-0"
         >
           {isLoading ? (
@@ -312,33 +361,30 @@ export function UploadArea({
           )}
         </Button>
       </div>
-      {isTextOrURL == TEXT_INPUT_TYPE.TEXT && (
-        <div className="flex justify-between items-centre">
-          <div>
-            <p className="p-2 text-sm text-foreground">
-              {FILE_SIZE_INSTRUCTION}
-            </p>
-            {inputError && (
-              <p className="p-2 text-red-500 font-medium">{inputError}</p>
-            )}
-          </div>
-          <p
-            className={cn(
-              "pr-2",
-              text.trim().length >= MIN_TEXT_LENGTH
-                ? text.trim().length > MAX_TEXT_LENGTH
-                  ? "text-red-500"
-                  : "text-teal-500"
-                : "text-zinc-700",
-            )}
-          >
-            {text.trim().length}/
-            {text.trim().length < MIN_TEXT_LENGTH
-              ? MIN_TEXT_LENGTH
-              : formatK(MAX_TEXT_LENGTH)}
-          </p>
+
+      <div className="flex justify-between items-centre">
+        <div>
+          <p className="p-2 text-sm text-foreground">{FILE_SIZE_INSTRUCTION}</p>
+          {inputError && (
+            <p className="p-2 text-red-500 font-medium">{inputError}</p>
+          )}
         </div>
-      )}
+        <p
+          className={cn(
+            "pr-2",
+            text.trim().length >= MIN_TEXT_LENGTH
+              ? text.trim().length > MAX_TEXT_LENGTH
+                ? "text-red-500"
+                : "text-teal-500"
+              : "text-zinc-700",
+          )}
+        >
+          {text.trim().length}/
+          {text.trim().length < MIN_TEXT_LENGTH
+            ? MIN_TEXT_LENGTH
+            : formatK(MAX_TEXT_LENGTH)}
+        </p>
+      </div>
     </>
   );
 }
