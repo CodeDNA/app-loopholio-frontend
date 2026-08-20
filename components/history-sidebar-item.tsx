@@ -39,10 +39,12 @@ export function HistorySideBarItem({
   error,
 }: HistorySideBarItemProps) {
   const menuRef = useRef<HTMLDivElement>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogProps, setDialogProps] = useState<ConfimationDialogArgs>({});
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
+    useState(false);
+  const [confirmationDialogProps, setConfirmationDialogProps] =
+    useState<ConfirmationDialogArgs>({});
 
-  interface ConfimationDialogArgs {
+  interface ConfirmationDialogArgs {
     title?: string;
     description?: string;
     cancelText?: string;
@@ -51,13 +53,13 @@ export function HistorySideBarItem({
     onConfirm?: () => void | Promise<void>;
   }
 
-  const openConfirmationDialog = (args: ConfimationDialogArgs) => {
-    setDialogProps(args);
-    setDialogOpen(true);
+  const openConfirmationDialog = (args: ConfirmationDialogArgs) => {
+    setConfirmationDialogProps(args);
+    setIsConfirmationDialogOpen(true);
   };
 
   async function handleConfirm(res: boolean) {
-    setDialogOpen(false);
+    setIsConfirmationDialogOpen(false);
     if (res) {
       handleDelete(item.id);
     }
@@ -206,14 +208,14 @@ export function HistorySideBarItem({
           </div>
         </div>
       )}
-      {dialogOpen && (
+      {isConfirmationDialogOpen && (
         <ConfirmationDialog
-          title={dialogProps.title}
-          description={dialogProps.description}
-          cancelText={dialogProps.cancelText}
-          confirmText={dialogProps.confirmText}
-          critical={dialogProps.critical}
-          open={dialogOpen}
+          title={confirmationDialogProps.title}
+          description={confirmationDialogProps.description}
+          cancelText={confirmationDialogProps.cancelText}
+          confirmText={confirmationDialogProps.confirmText}
+          critical={confirmationDialogProps.critical}
+          open={isConfirmationDialogOpen}
           onConfirm={(res: boolean) => handleConfirm(res)}
         />
       )}

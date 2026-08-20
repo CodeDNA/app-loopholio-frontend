@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 
-interface ButtonWithConfirmationProps {
+interface ConfirmationDialogProps {
   title?: string;
   description?: string;
   cancelText?: string;
@@ -28,8 +28,7 @@ export function ConfirmationDialog({
   critical = false,
   open,
   onConfirm,
-}: ButtonWithConfirmationProps) {
-  console.log("rendered");
+}: ConfirmationDialogProps) {
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
