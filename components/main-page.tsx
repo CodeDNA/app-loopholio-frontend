@@ -15,13 +15,33 @@ import {
   ProgressValue,
 } from "@/components/ui/progress";
 import { Spinner } from "./ui/spinner";
+import { cn } from "@/lib/utils";
+import {
+  BACKGROUNDS,
+  UPLOAD_AREA_BACKGROUNDS,
+} from "@/components/ui/custom/classes/background-classes";
+import { FEATURE_FLAGS_ENUM } from "@/flags/flags.enum";
 
 const STORAGE_KEY = "tos_analysis_history";
 interface MainPageProps {
-  FEATURE_FLAGS: Record<string, any>;
+  FEATURE_FLAGS: Record<string, string>;
 }
 
 export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
+  const backgroundVersion = FEATURE_FLAGS[FEATURE_FLAGS_ENUM.bgversion];
+  let backgroundClass = "";
+  let uploadAreaBackGroungClass = "";
+  switch (backgroundVersion) {
+    case "blue_bg":
+      backgroundClass = BACKGROUNDS.blue_bg;
+      uploadAreaBackGroungClass = UPLOAD_AREA_BACKGROUNDS.blue_bg;
+      break;
+    case "original_mud_bg":
+      backgroundClass = BACKGROUNDS.original_mud_bg;
+      uploadAreaBackGroungClass = UPLOAD_AREA_BACKGROUNDS.original_mud_bg;
+      break;
+  }
+
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [currentAnalysis, setCurrentAnalysis] = useState<Analysis | null>(null);
   const initialProcessStatus = "Thinking...";
@@ -376,14 +396,19 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
   }));
 
   return (
-    <main className="h-screen bg-background flex flex-col lg:flex-row overflow-hidden">
+    <main
+      className={cn(
+        "h-screen flex flex-col lg:flex-row overflow-hidden",
+        backgroundClass, // FEATURE FLAG
+      )}
+    >
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-10 animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-5" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-4xl opacity-3" />
       </div>
 
       <HistoryWrapper
+        backgroundClass={backgroundClass} // FEATURE FLAG
         handleNewAnalysis={handleNewAnalysis}
         backendStatus={backendStatus}
         historyItems={historyItems}
@@ -403,7 +428,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         setSidebarOpen={setSidebarOpen}
       />
       {/* Main Result Content Area - Analysis Results*/}
-      <div className="flex-1 flex flex-col relative z-10 overflow-hidden bg-[#0f0f0f]">
+      <div className="flex-1 flex flex-col relative z-10 overflow-hidden bg-transparent">
         {/* PREVIEW + RISK ITEMS - File name in case of file and text in case of text input */}
         <div
           ref={backgroundRef}
@@ -495,6 +520,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         >
           <div className="max-w-3xl mx-auto">
             <UploadArea
+              uploadAreaBackGroungClass={uploadAreaBackGroungClass} // FEATURE FLAG
               onAnalyze={handleAnalyze}
               isLoading={isLoading}
               backendStatus={backendStatus}

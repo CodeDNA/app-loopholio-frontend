@@ -71,12 +71,12 @@ export function HistorySidebar({
   };
 
   return (
-    <div className="w-[20.8rem] border-r border-border bg-[#0f0f0f] flex flex-col h-screen overflow-hidden">
+    <div className="w-[20.8rem] border-r border-border bg-transparent flex flex-col h-screen overflow-hidden">
       {/* Top Header - Logo, Brand name, Connection pill */}
       <div className="px-4 py-4 shrink-0 flex justify-between">
         {/* LoopHolio Logo */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-foreground border border-blue-900/50">
             <p>LH</p>
           </div>
           {/* LoopHolio Brand Text */}
@@ -110,8 +110,8 @@ export function HistorySidebar({
                   className="flex items-center justify-center size-5"
                   onClick={() => setIsOpen(!isOpen)}
                 >
-                  {isOpen && <ChevronRight />}
-                  {!isOpen && <ChevronDown />}
+                  {!isOpen && <ChevronRight />}
+                  {isOpen && <ChevronDown />}
                 </CollapsibleTrigger>
               )}
             </div>

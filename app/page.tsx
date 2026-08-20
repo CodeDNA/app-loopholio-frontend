@@ -1,8 +1,11 @@
 import MainPage from "@/components/main-page";
+import { FEATURE_FLAGS_ENUM } from "@/flags/flags.enum";
+import { ff_bg_version } from "@/flags/flags";
 
-export const FEATURE_FLAGS: Record<string, any> = {};
-
+const FEATURE_FLAGS: Record<string, any> = {};
 export default async function Page() {
+  const bgversion = await ff_bg_version();
+  FEATURE_FLAGS[FEATURE_FLAGS_ENUM.bgversion] = bgversion;
   return (
     <main>
       <MainPage FEATURE_FLAGS={FEATURE_FLAGS} />

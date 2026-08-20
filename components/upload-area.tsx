@@ -11,6 +11,7 @@ interface UploadAreaProps {
   onAnalyze: (text: string, isUrl: boolean, file?: File) => void;
   isLoading: boolean;
   backendStatus: ConnectionStatus;
+  uploadAreaBackGroungClass: string;
 }
 
 const MAX_FILE_SIZE_MB = 5;
@@ -27,6 +28,7 @@ export function UploadArea({
   onAnalyze,
   isLoading,
   backendStatus,
+  uploadAreaBackGroungClass,
 }: UploadAreaProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [text, setText] = useState("");
@@ -227,7 +229,12 @@ export function UploadArea({
 
   return (
     <>
-      <div className="flex items-center gap-0 rounded-2xl border border-border/50 bg-[#0f0f0f] hover:border-primary/50 transition-all duration-200 focus-within:border-primary/50 p-2">
+      <div
+        className={cn(
+          "flex items-center gap-0 rounded-2xl border border-border/50 hover:border-primary/50 transition-all duration-200 focus-within:border-primary/50 p-2",
+          uploadAreaBackGroungClass, // FEATURE FLAG
+        )}
+      >
         {/* Hidden file input */}
         <input
           ref={fileInputRef}

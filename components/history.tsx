@@ -1,4 +1,5 @@
 import { HistorySidebar } from "@/components/history-sidebar";
+import { cn } from "@/lib/utils";
 import { ConnectionStatus } from "@/types/connection-status";
 
 interface HistoryWrapperProps {
@@ -13,6 +14,7 @@ interface HistoryWrapperProps {
   backendStatus: ConnectionStatus;
   handleNewAnalysis: () => void;
   isLoading: boolean;
+  backgroundClass: string; //FEATURE FLAG
 }
 
 export function HistoryWrapper({
@@ -27,11 +29,12 @@ export function HistoryWrapper({
   backendStatus,
   handleNewAnalysis,
   isLoading,
+  backgroundClass, //FEATURE FLAG
 }: HistoryWrapperProps) {
   return (
     <>
       {/* WEB - History Sidebar */}
-      <div className="hidden lg:block relative z-20 h-screen overflow-hidden">
+      <div className="hidden lg:block relative z-20 bg-transparent h-screen overflow-hidden">
         <HistorySidebar
           backendStatus={backendStatus}
           mobileView={false}
@@ -56,9 +59,12 @@ export function HistoryWrapper({
       )}
       {/* MOBILE - History Sidebar */}
       <div
-        className={`fixed left-0 top-0 h-screen w-[20.8rem] bg-[#0f0f0f] border-r border-border z-40 lg:hidden transform transition-transform duration-300 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={cn(
+          `fixed left-0 top-0 h-screen w-[20.8rem] border-r border-border z-40 lg:hidden transform transition-transform duration-300 ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`,
+          backgroundClass, // FEATURE FLAG
+        )}
       >
         <HistorySidebar
           backendStatus={backendStatus}
