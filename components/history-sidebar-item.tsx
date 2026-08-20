@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
+import { Pencil, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { ConfirmationDialog } from "@/components/ui/custom/confirmation-dialog";
 
 interface HistorySideBarItemProps {
   item: any;
@@ -37,6 +39,29 @@ export function HistorySideBarItem({
   error,
 }: HistorySideBarItemProps) {
   const menuRef = useRef<HTMLDivElement>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogProps, setDialogProps] = useState<ConfimationDialogArgs>({});
+
+  interface ConfimationDialogArgs {
+    title?: string;
+    description?: string;
+    cancelText?: string;
+    confirmText?: string;
+    critical?: boolean;
+    onConfirm?: () => void | Promise<void>;
+  }
+
+  const openConfirmationDialog = (args: ConfimationDialogArgs) => {
+    setDialogProps(args);
+    setDialogOpen(true);
+  };
+
+  async function handleConfirm(res: boolean) {
+    setDialogOpen(false);
+    if (res) {
+      handleDelete(item.id);
+    }
+  }
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -153,24 +178,44 @@ export function HistorySideBarItem({
                       e.stopPropagation();
                       handleRenameStart(item.id, item.fileName);
                     }}
-                    className="w-full text-left px-4 py-2 text-xs hover:bg-primary/10 transition-all text-foreground first:rounded-t-lg"
+                    className="flex gap-1 items-center w-full text-left px-4 py-2 text-xs hover:bg-primary/10 transition-all text-foreground first:rounded-t-lg"
                   >
+                    <Pencil className="size-3" />
                     Rename
                   </button>
-                  <button
+                  <div
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleDelete(item.id);
+                      openConfirmationDialog({
+                        title: "Delete Analysis?",
+                        description:
+                          "Are you sure you want to delete this analysis? This action cannot be undone.",
+                        cancelText: "Cancel",
+                        confirmText: "Delete",
+                        critical: true,
+                      });
                     }}
-                    className="w-full text-left px-4 py-2 text-xs hover:bg-red-500/10 transition-all text-red-400 last:rounded-b-lg border-t border-border/50"
+                    className="flex gap-1 items-center w-full text-left px-4 py-2 text-xs hover:bg-red-500/10 transition-all text-red-400 last:rounded-b-lg border-t border-border/50"
                   >
+                    <Trash2 className="size-3" />
                     Delete
-                  </button>
+                  </div>
                 </div>
               )}
             </div>
           </div>
         </div>
+      )}
+      {dialogOpen && (
+        <ConfirmationDialog
+          title={dialogProps.title}
+          description={dialogProps.description}
+          cancelText={dialogProps.cancelText}
+          confirmText={dialogProps.confirmText}
+          critical={dialogProps.critical}
+          open={dialogOpen}
+          onConfirm={(res: boolean) => handleConfirm(res)}
+        />
       )}
     </div>
   );
