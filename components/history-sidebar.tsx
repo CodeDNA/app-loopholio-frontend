@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { ConnectionPill } from "@/components/connection-pill";
 import { ConnectionStatus } from "@/types/connection-status";
 import { HistorySideBarItem } from "@/components/history-sidebar-item";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, CircleFadingPlus } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -24,6 +24,8 @@ interface HistorySidebarProps {
   streaming?: boolean;
   mobileView?: boolean;
   backendStatus: ConnectionStatus;
+  handleNewAnalysis: () => void;
+  isLoading: boolean;
 }
 
 export function HistorySidebar({
@@ -36,6 +38,8 @@ export function HistorySidebar({
   streaming,
   mobileView,
   backendStatus,
+  handleNewAnalysis,
+  isLoading,
 }: HistorySidebarProps) {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [renamingId, setRenamingId] = useState<string | null>(null);
@@ -81,6 +85,19 @@ export function HistorySidebar({
         {/* Connection Pill - Sidebar */}
         {!mobileView && <ConnectionPill backendStatus={backendStatus} />}
       </div>
+
+      <button
+        disabled={isLoading}
+        onClick={handleNewAnalysis}
+        className="px-4 py-4 shrink-0 flex items-center text-foreground group hover:text-emerald-500"
+      >
+        <div className="flex items-center w-full group-hover:bg-muted-foreground/20 gap-2 rounded-lg p-2">
+          <CircleFadingPlus className="size-4 border-transparent" />
+          <p className="border-2 border-transparent font-semibold">
+            Start New Analysis
+          </p>
+        </div>
+      </button>
 
       {/* Recents Header */}
       <Collapsible open={isOpen}>

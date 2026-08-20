@@ -11,6 +11,8 @@ interface HistoryWrapperProps {
   handleRenameItem: any;
   setSidebarOpen: any;
   backendStatus: ConnectionStatus;
+  handleNewAnalysis: () => void;
+  isLoading: boolean;
 }
 
 export function HistoryWrapper({
@@ -23,6 +25,8 @@ export function HistoryWrapper({
   handleRenameItem,
   setSidebarOpen,
   backendStatus,
+  handleNewAnalysis,
+  isLoading,
 }: HistoryWrapperProps) {
   return (
     <>
@@ -38,6 +42,8 @@ export function HistoryWrapper({
           onDelete={handleDeleteItem}
           onRename={handleRenameItem}
           streaming={currentAnalysis?.isStreaming}
+          handleNewAnalysis={handleNewAnalysis}
+          isLoading={isLoading}
         />
       </div>
 
@@ -66,6 +72,9 @@ export function HistoryWrapper({
           onClear={handleClearHistory}
           onDelete={handleDeleteItem}
           onRename={handleRenameItem}
+          streaming={currentAnalysis?.isStreaming}
+          handleNewAnalysis={handleNewAnalysis}
+          isLoading={isLoading}
         />
       </div>
     </>

@@ -314,7 +314,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
   };
 
   const handleHistorySelect = (id: string) => {
-    if (currentAnalysis?.isStreaming == false) {
+    if (!currentAnalysis?.isStreaming) {
       const selected = analyses.find((a) => a.id === id);
       if (selected) {
         setCurrentAnalysis({
@@ -356,6 +356,10 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
     }
   };
 
+  const handleNewAnalysis = () => {
+    setCurrentAnalysis(null);
+  };
+
   const historyItems: HistoryItem[] = analyses.map((a) => ({
     id: a.id,
     fileName: a.fileName,
@@ -380,6 +384,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
       </div>
 
       <HistoryWrapper
+        handleNewAnalysis={handleNewAnalysis}
         backendStatus={backendStatus}
         historyItems={historyItems}
         currentAnalysis={currentAnalysis}
@@ -389,6 +394,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         handleRenameItem={handleRenameItem}
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
+        isLoading={isLoading}
       />
 
       <HeaderMobile
