@@ -36,7 +36,7 @@ export function RiskItemCard({ risk }: { risk: RiskLevel }) {
   return (
     <Collapsible open={isOpen}>
       <div
-        className={`border-2 rounded-2xl p-6 space-y-4 bg-transparent ${getRiskColor(risk.level)} animate-in fade-in slide-in-from-bottom-2`}
+        className={`border rounded-2xl p-6 space-y-4 bg-transparent ${getRiskColor(risk.level)} animate-in fade-in slide-in-from-bottom-2`}
       >
         {/* Header Row */}
         <div className="flex items-start justify-between gap-4">
@@ -123,7 +123,7 @@ export function RiskItemCard({ risk }: { risk: RiskLevel }) {
                 <p className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider mb-2">
                   Reason
                 </p>
-                <p className="text-sm text-foreground leading-relaxed">
+                <p className="text-sm text-foreground/80 leading-relaxed">
                   {risk.reason}
                 </p>
               </div>
@@ -133,7 +133,7 @@ export function RiskItemCard({ risk }: { risk: RiskLevel }) {
                 <p className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider mb-2">
                   Why This Matters
                 </p>
-                <p className="text-sm text-foreground leading-relaxed">
+                <p className="text-sm text-foreground/80 leading-relaxed">
                   {risk.whyMatters}
                 </p>
               </div>
@@ -143,7 +143,7 @@ export function RiskItemCard({ risk }: { risk: RiskLevel }) {
                 <p className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider mb-2">
                   Recommendation
                 </p>
-                <p className="text-sm text-foreground font-medium leading-relaxed">
+                <p className="text-sm text-foreground/80 font-medium leading-relaxed">
                   {risk.recommendation}
                 </p>
               </div>

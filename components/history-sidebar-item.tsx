@@ -87,11 +87,12 @@ export function HistorySideBarItem({
             <p
               className={cn(
                 "text-xs font-medium truncate",
-                error ? "text-red-500/80" : "text-foreground",
+                error ? "text-red-700" : "text-foreground/80 ",
               )}
             >
               {item.fileName}
             </p>
+
             <p className="text-xs text-muted-foreground mt-0.5">
               {new Date(item.uploadedAt).toLocaleDateString(undefined, {
                 month: "short",
@@ -100,20 +101,24 @@ export function HistorySideBarItem({
             </p>
           </div>
           <div className="flex items-center gap-0.5 shrink-0">
-            {item.highRiskCount > 0 && (
-              <div className="text-xs font-semibold px-1.5 py-0.5 rounded bg-slate-700 text-red-400 border border-slate-600">
-                {item.highRiskCount}
-              </div>
-            )}
-            {item.mediumRiskCount > 0 && (
-              <div className="text-xs font-semibold px-1.5 py-0.5 rounded bg-slate-700 text-yellow-400 border border-slate-600">
-                {item.mediumRiskCount}
-              </div>
-            )}
-            {item.lowRiskCount > 0 && (
-              <div className="text-xs font-semibold px-1.5 py-0.5 rounded bg-slate-700 text-emerald-400 border border-slate-600">
-                {item.lowRiskCount}
-              </div>
+            {!error && (
+              <>
+                {item.highRiskCount > 0 && (
+                  <div className="text-xs font-semibold px-1.5 py-0.5 rounded bg-slate-700/70 text-red-500 border border-slate-600">
+                    {item.highRiskCount}
+                  </div>
+                )}
+                {item.mediumRiskCount > 0 && (
+                  <div className="text-xs font-semibold px-1.5 py-0.5 rounded bg-slate-700/70 text-yellow-500 border border-slate-600">
+                    {item.mediumRiskCount}
+                  </div>
+                )}
+                {item.lowRiskCount > 0 && (
+                  <div className="text-xs font-semibold px-1.5 py-0.5 rounded bg-slate-700/70 text-emerald-500 border border-slate-600">
+                    {item.lowRiskCount}
+                  </div>
+                )}
+              </>
             )}
             <div className="relative" ref={menuRef}>
               {!streaming && (
