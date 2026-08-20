@@ -129,6 +129,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
     }
   }, [currentAnalysis]);
 
+  // Set progress bar text and percentage
   useEffect(() => {
     switch (currentStatus) {
       case "Processing your text...":

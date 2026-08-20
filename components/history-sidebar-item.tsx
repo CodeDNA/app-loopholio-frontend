@@ -107,7 +107,9 @@ export function HistorySideBarItem({
         <div
           onClick={() => onSelect(item.id)}
           className={`w-full text-left p-2 rounded-lg transition-all flex items-start justify-between gap-2 group cursor-pointer ${
-            selectedId === item.id ? "bg-primary/20" : "hover:bg-[#6a6a6a]"
+            selectedId === item.id
+              ? "bg-primary/20"
+              : "hover:bg-muted-foreground/20"
           }`}
         >
           <div className="flex-1 min-w-0">
