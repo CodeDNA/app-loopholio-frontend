@@ -348,6 +348,7 @@ export function UploadArea({
             !hasContent ||
             !!inputError ||
             (isTextOrURL == TEXT_INPUT_TYPE.TEXT &&
+              !fileName &&
               text.length < MIN_TEXT_LENGTH)
           }
           className="h-10 px-4 bg-teal-500 hover:bg-teal-700 text-white font-semibold rounded-r-2xl transition-all shrink-0"
