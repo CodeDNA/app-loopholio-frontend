@@ -16,6 +16,7 @@ interface HistorySideBarItemProps {
   setRenamingId: any;
   openMenuId: any;
   mobileView?: boolean;
+  error: any;
 }
 
 export function HistorySideBarItem({
@@ -33,6 +34,7 @@ export function HistorySideBarItem({
   setRenamingId,
   openMenuId,
   mobileView,
+  error,
 }: HistorySideBarItemProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -82,7 +84,12 @@ export function HistorySideBarItem({
           }`}
         >
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-foreground truncate">
+            <p
+              className={cn(
+                "text-xs font-medium truncate",
+                error ? "text-red-500/80" : "text-foreground",
+              )}
+            >
               {item.fileName}
             </p>
             <p className="text-xs text-muted-foreground mt-0.5">

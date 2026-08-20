@@ -35,4 +35,5 @@ export interface HistoryItem {
   highRiskCount: number;
   mediumRiskCount: number;
   lowRiskCount: number;
+  error: any;
 }

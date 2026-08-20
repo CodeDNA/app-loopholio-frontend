@@ -367,6 +367,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
       a.riskLevels.filter((r) => r.level === "Medium").length,
     lowRiskCount:
       a.lowRiskCount ?? a.riskLevels.filter((r) => r.level === "Low").length,
+    error: a.error,
   }));
 
   return (

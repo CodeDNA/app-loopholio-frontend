@@ -112,6 +112,7 @@ export function HistorySidebar({
                 onSelect={onSelect}
                 handleRenameStart={handleRenameStart}
                 handleDelete={handleDelete}
+                error={item.error}
                 selectedId={selectedId}
                 streaming={streaming}
                 setOpenMenuId={setOpenMenuId}
