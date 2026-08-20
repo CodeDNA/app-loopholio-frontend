@@ -403,11 +403,11 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         setSidebarOpen={setSidebarOpen}
       />
       {/* Main Result Content Area - Analysis Results*/}
-      <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
+      <div className="flex-1 flex flex-col relative z-10 overflow-hidden bg-[#0f0f0f]">
         {/* PREVIEW + RISK ITEMS - File name in case of file and text in case of text input */}
         <div
           ref={backgroundRef}
-          className="flex-1 overflow-y-auto pb-20 bg-[#0f0f0f]"
+          className="flex-1 overflow-y-auto pb-20 bg-transparent"
         >
           {currentAnalysis && !currentAnalysis.isStreaming ? (
             // This div decides the max-width of the analyses container
@@ -488,10 +488,10 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
           <div ref={contentRef} />
         </div>
 
-        {/* INPUT AREA*/}
+        {/* UPLOAD/INPUT AREA*/}
         <div
           onWheel={handleForegroundWheel}
-          className="sticky bottom-0 bg-[#0f0f0f] backdrop-blur-sm px-6 z-30"
+          className="sticky bottom-0 bg-transparent backdrop-blur-sm px-6 z-30"
         >
           <div className="max-w-3xl mx-auto">
             <UploadArea
