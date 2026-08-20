@@ -90,7 +90,6 @@ export function UploadArea({
     }
     if (file.size > MAX_FILE_SIZE_BYTES) {
       setInputError(FILE_SIZE_ERROR_MESSAGE);
-      return;
     } else {
       setInputError("");
     }
@@ -268,6 +267,7 @@ export function UploadArea({
           <button
             onClick={() => {
               setFileName(null);
+              setInputError("");
               if (fileInputRef.current) fileInputRef.current.value = "";
             }}
             disabled={isLoading}
