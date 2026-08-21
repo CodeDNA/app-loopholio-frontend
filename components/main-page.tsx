@@ -441,7 +441,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
   return (
     <main
       className={cn(
-        "h-screen flex flex-col lg:flex-row overflow-hidden",
+        "h-svh flex flex-col lg:flex-row overflow-hidden",
         backgroundClass, // FEATURE FLAG
       )}
     >
@@ -508,7 +508,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
           onWheel={handleForegroundWheel}
           className="sticky bottom-0 bg-transparent backdrop-blur-sm px-6 z-30"
         >
-          <div className="max-w-3xl mx-auto mb-15 lg:mb-0">
+          <div className="max-w-3xl mx-auto">
             <UploadArea
               uploadAreaBackGroungClass={uploadAreaBackGroungClass} // FEATURE FLAG
               onAnalyze={handleAnalyze}
