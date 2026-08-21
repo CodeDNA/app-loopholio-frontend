@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 export function NewAnalysisComponent() {
@@ -12,7 +13,7 @@ export function NewAnalysisComponent() {
         height={400}
         style={{ width: "50%", height: "60%" }}
       />
-      <div className="text-muted-foreground max-w-md">
+      <div className={cn("text-muted-foreground max-w-md px-10 lg:px-0")}>
         <p className="font-bold text-md">
           See what matters before you click Agree!
         </p>
@@ -21,9 +22,9 @@ export function NewAnalysisComponent() {
           identifies the clauses that matter, explains the risks in plain
           language and shows exactly where each finding comes from.
         </p>
-        <p className="mt-10">
-          Supports PDF, Word, text, image(you add a screenshot of the text) and
-          Terms of Service URLs.
+        <p className="mt-10 text-start">
+          Supports PDF, Word, text, image(or a screenshot of the text document)
+          and Terms of Service URLs.
         </p>
       </div>
     </div>
