@@ -1,6 +1,6 @@
 import { HistorySidebar } from "@/components/history-sidebar";
 import { cn } from "@/lib/utils";
-import { ConnectionStatus } from "@/types-and-constants/connection-status";
+import { ConnectionStatus } from "@/lib/types/connection-status";
 
 interface HistoryWrapperProps {
   historyItems: any;

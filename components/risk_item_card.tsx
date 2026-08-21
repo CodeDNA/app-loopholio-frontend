@@ -1,4 +1,4 @@
-import { RiskLevel } from "@/types-and-constants/analysis";
+import { RiskLevel } from "@/lib/types/analysis";
 import { useState } from "react";
 import { ChevronUp } from "lucide-react";
 import {

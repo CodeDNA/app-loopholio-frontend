@@ -1,6 +1,6 @@
 import MainPage from "@/components/main-page";
-import { FEATURE_FLAGS_ENUM } from "@/flags/flags.enum";
-import { ff_bg_version } from "@/flags/flags";
+import { FEATURE_FLAGS_ENUM } from "@/lib/flags/flags.enum";
+import { ff_bg_version } from "@/lib/flags/flags";
 
 const FEATURE_FLAGS: Record<string, any> = {};
 export default async function Page() {

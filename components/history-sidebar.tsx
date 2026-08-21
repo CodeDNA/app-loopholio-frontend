@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { HistoryItem } from "@/types-and-constants/analysis";
+import { HistoryItem } from "@/lib/types/analysis";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ConnectionPill } from "@/components/connection-pill";
-import { ConnectionStatus } from "@/types-and-constants/connection-status";
+import { ConnectionStatus } from "@/lib/types/connection-status";
 import { HistorySideBarItem } from "@/components/history-sidebar-item";
 import { ChevronDown, ChevronRight, CircleFadingPlus } from "lucide-react";
 import {
