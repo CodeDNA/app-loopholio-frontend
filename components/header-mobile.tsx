@@ -14,7 +14,7 @@ export function HeaderMobile({
   return (
     <>
       {/* Mobile Header/Top Bar with Burger Menu */}
-      <div className="lg:hidden mt-10 flex items-center justify-between px-4 py-4 bg-transparent border-b border-border/30 shrink-0">
+      <div className="lg:hidden flex items-center justify-between px-4 py-4 bg-transparent border-b border-border/30 shrink-0">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="h-10 w-10 flex items-center justify-center rounded-lg border border-border/50 hover:border-primary/50 hover:text-primary transition-all text-muted-foreground"
