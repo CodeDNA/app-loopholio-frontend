@@ -224,7 +224,7 @@ export function UploadArea({
 
   const hasContent = fileName || text.trim() || url;
   const inputClasses =
-    "block box-border w-full h-10 bg-transparent px-4 py-2 text-sm leading-6 text-foreground placeholder:text-muted-foreground/60 focus:outline-none disabled:opacity-50";
+    "block box-border w-full h-10 bg-transparent px-4 py-2 leading-6 text-foreground placeholder:text-muted-foreground/60 focus:outline-none disabled:opacity-50";
 
   return (
     <>
