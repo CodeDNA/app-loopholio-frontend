@@ -308,7 +308,7 @@ export function UploadArea({
         >
           {isTextOrURL === TEXT_INPUT_TYPE.TEXT && (
             <textarea
-              value={fileName ? `File: ${fileName}` : text}
+              value={fileName ? `${fileName}` : text}
               onChange={handleTextChange}
               onDragEnter={handleDragEnter}
               onDragLeave={handleDragLeave}
@@ -321,7 +321,7 @@ export function UploadArea({
           )}
           {isTextOrURL === TEXT_INPUT_TYPE.URL && (
             <input
-              value={fileName ? `File: ${fileName}` : url}
+              value={fileName ? `${fileName}` : url}
               onChange={handleUrlChange}
               type="url"
               className={inputClasses}
