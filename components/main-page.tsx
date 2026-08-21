@@ -176,6 +176,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
     }
     return () => setAnalysisProgress(0);
   }, [currentStatus]);
+
   // Allows scrolling through the results even when the cursor is over the upload area
   const handleForegroundWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     event.preventDefault();

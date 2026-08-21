@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, TriangleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ConfirmationDialog } from "@/components/ui/custom/confirmation-dialog";
 
@@ -115,11 +115,12 @@ export function HistorySideBarItem({
           <div className="flex-1 min-w-0">
             <p
               className={cn(
-                "text-xs font-medium truncate",
-                error ? "text-red-700" : "text-foreground/80 ",
+                "text-xs font-medium truncate text-foreground/80 flex items-center gap-2",
+                // error ? "text-red-700/70" : "text-foreground/80 ",
               )}
             >
               {item.fileName}
+              {error && <TriangleAlert className="size-3 text-red-700" />}
             </p>
 
             <p className="text-xs text-muted-foreground mt-0.5">

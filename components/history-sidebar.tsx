@@ -71,7 +71,7 @@ export function HistorySidebar({
   };
 
   return (
-    <div className="w-[20.8rem] border-r border-border bg-transparent flex flex-col h-screen overflow-hidden">
+    <div className="w-[20.8rem] border-r border-border bg-transparent flex flex-col h-screen">
       {/* Top Header - Logo, Brand name, Connection pill */}
       <div className="px-4 py-4 shrink-0 flex justify-between">
         {/* LoopHolio Logo */}
@@ -118,8 +118,8 @@ export function HistorySidebar({
             {items.length > 0 && (
               <Button
                 onClick={onClear}
-                variant="outline"
-                className="text-xs py-1 h-auto"
+                variant="destructive"
+                className={"text-xs py-1 h-auto"}
               >
                 Delete all
               </Button>
@@ -129,7 +129,7 @@ export function HistorySidebar({
 
         {/* History List */}
         <CollapsibleContent>
-          <div className="flex-1 overflow-y-auto">
+          <div className="h-screen flex-1 overflow-y-scroll pb-50">
             {items.length === 0 ? (
               <div className="p-4 text-center">
                 <div className="text-muted-foreground">
