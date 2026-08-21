@@ -41,7 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className="antialiased bg-background"
+        className="antialiased bg-[#0b0f15]" // from light to dark: #11151c, #0b0f15 #070a0f
         style={{
           fontFamily:
             '-apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", sans-serif',
