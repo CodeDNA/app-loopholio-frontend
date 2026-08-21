@@ -1,20 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { UploadArea } from "@/components/upload-area";
 import { AnalysisDisplay } from "@/components/analysis-display";
 import { HistoryWrapper } from "@/components/history";
 import { Analysis, HistoryItem, RiskLevel } from "@/lib/types/analysis";
-import LiquidWaveSpinner from "@/components/ui/shadcn-space/spinner/spinner-10";
 import { HeaderMobile } from "@/components/header-mobile";
 import { ConnectionStatus } from "@/lib/types/connection-status";
-import {
-  Progress,
-  ProgressLabel,
-  ProgressValue,
-} from "@/components/ui/progress";
-import { Spinner } from "./ui/spinner";
+import { ProcessingComponent } from "@/components/processing-component";
+import { NewAnalysisComponent } from "@/components/new-analysis-component";
+import { DocumentPreviewComponent } from "@/components/document-preview-component";
 import { cn } from "@/lib/utils";
 import {
   BACKGROUNDS,
@@ -403,7 +398,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         backgroundClass, // FEATURE FLAG
       )}
     >
-      {/* Animated background elements */}
+      {/* Background elements - Glow circle */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-4xl opacity-3" />
       </div>
@@ -437,79 +432,26 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         >
           {currentAnalysis && !currentAnalysis.isStreaming ? (
             // This div decides the max-width of the analyses container
-            <div className="max-w-5xl mx-auto px-6 py-8">
-              <div className="space-y-6">
-                <div className="flex items-center gap-3 p-4 rounded-xl bg-linear-to-r from-primary/10 to-primary/5 border border-primary/20">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">
-                      {viewFullText
-                        ? currentAnalysis.documentPreview
-                        : (currentAnalysis.documentPreview &&
-                            `${currentAnalysis.documentPreview.substring(0, 200)}...`) ||
-                          currentAnalysis.title}
-                    </p>
-
-                    <div className="flex justify-between mt-5">
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Analysis completed{" : "}
-                        {new Date(currentAnalysis.uploadedAt).toLocaleString()}
-                      </p>
-                      {/* Toggle button is only required in case of text input coz documentPreview is not generated only for file input. */}
-                      {currentAnalysis.documentPreview && (
-                        <p
-                          className="text-emerald-500 hover:text-emerald-900"
-                          onClick={() => setViewFullText(!viewFullText)}
-                        >
-                          {viewFullText ? "view less" : "view more"}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <AnalysisDisplay
-                  key={currentAnalysis.id}
-                  riskLevels={currentAnalysis.riskLevels}
-                  isStreaming={currentAnalysis.isStreaming}
-                  error={currentAnalysis.error}
-                />
-              </div>
+            <div className="max-w-5xl mx-auto px-6 py-8 space-y-6">
+              <DocumentPreviewComponent
+                viewFullText={viewFullText}
+                currentAnalysis={currentAnalysis}
+                setViewFullText={setViewFullText}
+              />
+              <AnalysisDisplay
+                key={currentAnalysis.id}
+                riskLevels={currentAnalysis.riskLevels}
+                isStreaming={currentAnalysis.isStreaming}
+                error={currentAnalysis.error}
+              />
             </div>
           ) : currentAnalysis && currentAnalysis.isStreaming ? (
-            <div className="max-w-3xl mx-auto px-6 py-8 items-center justify-center">
-              <div className="text-center py-16">
-                <div className="flex-row">
-                  <LiquidWaveSpinner
-                    words={["Processing..."]}
-                    size={"lg"}
-                    interval={50}
-                  />
-                  <Progress className="w-full" value={analysisProgress}>
-                    <ProgressLabel className="flex gap-1 items-center text-emerald-500">
-                      <Spinner />
-                      {currentStatus}
-                    </ProgressLabel>
-                    <ProgressValue className="text-emerald-500" />
-                  </Progress>
-                  {/* <p>{analysisProgress}%</p> */}
-                </div>
-              </div>
-            </div>
+            <ProcessingComponent
+              analysisProgress={analysisProgress}
+              currentStatus={currentStatus}
+            />
           ) : (
-            <div className="flex flex-col items-center justify-center h-full">
-              <Image
-                className="w-full rounded-xl opacity-80 min-w-100 min-h-50 max-w-200 max-h-100"
-                src="/images/no_analysis_dark_no_bg.png"
-                alt="Company Logo"
-                loading="eager"
-                width={800}
-                height={400}
-                style={{ width: "50%", height: "60%" }}
-              />
-              <p className="text-muted-foreground max-w-md text-center">
-                Upload a Terms of Service document or paste text/url below to
-                analyze key risks, clauses, and compliance issues
-              </p>
-            </div>
+            <NewAnalysisComponent />
           )}
           <div ref={contentRef} />
         </div>
