@@ -137,11 +137,8 @@ export function HistorySidebar({
                   <h3 className="font-bold text-foreground mb-3">
                     No Analysis Yet
                   </h3>
-                  <h2>
-                    Upload a Terms of Service document or paste text/url in the
-                    textbox to analyze key risks, clauses, and compliance
-                    issues.
-                  </h2>
+                  <p>See what matters before you click Agree.</p>
+                  <p>Start a new analysis.</p>
                 </div>
               </div>
             ) : (

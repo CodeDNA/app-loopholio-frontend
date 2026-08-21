@@ -12,10 +12,20 @@ export function NewAnalysisComponent() {
         height={400}
         style={{ width: "50%", height: "60%" }}
       />
-      <p className="text-muted-foreground max-w-md text-center">
-        Upload a Terms of Service document or paste text/url below to analyze
-        key risks, clauses, and compliance issues
-      </p>
+      <div className="text-muted-foreground max-w-md">
+        <p className="font-bold text-md">
+          See what matters before you click Agree!
+        </p>
+        <p className="text-justify">
+          Upload, paste, or add a link to any Terms of Service. LoopHolio
+          identifies the clauses that matter, explains the risks in plain
+          language and shows exactly where each finding comes from.
+        </p>
+        <p className="mt-10">
+          Supports PDF, Word, text, image(you add a screenshot of the text) and
+          Terms of Service URLs.
+        </p>
+      </div>
     </div>
   );
 }
