@@ -5,10 +5,14 @@ import { useState, useEffect, useRef } from "react";
 import { UploadArea } from "@/components/upload-area";
 import { AnalysisDisplay } from "@/components/analysis-display";
 import { HistoryWrapper } from "@/components/history";
-import { Analysis, HistoryItem, RiskLevel } from "@/types/analysis";
+import {
+  Analysis,
+  HistoryItem,
+  RiskLevel,
+} from "@/types-and-constants/analysis";
 import LiquidWaveSpinner from "@/components/ui/shadcn-space/spinner/spinner-10";
 import { HeaderMobile } from "@/components/header-mobile";
-import { ConnectionStatus } from "@/types/connection-status";
+import { ConnectionStatus } from "@/types-and-constants/connection-status";
 import {
   Progress,
   ProgressLabel,
@@ -19,7 +23,7 @@ import { cn } from "@/lib/utils";
 import {
   BACKGROUNDS,
   UPLOAD_AREA_BACKGROUNDS,
-} from "@/components/ui/custom/classes/background-classes";
+} from "@/types-and-constants/classes/background-classes";
 import { FEATURE_FLAGS_ENUM } from "@/flags/flags.enum";
 
 const STORAGE_KEY = "tos_analysis_history";

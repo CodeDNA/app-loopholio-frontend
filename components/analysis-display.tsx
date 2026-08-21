@@ -1,11 +1,11 @@
 "use client";
 
-import { RiskLevel } from "@/types/analysis";
+import { RiskLevel } from "@/types-and-constants/analysis";
 import { ErrorComponent } from "@/components/error_component";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { RiskItemCard } from "@/components/risk_item_card";
-import { FILTERS } from "@/types/filters";
+import { FILTERS } from "@/types-and-constants/filters";
 
 interface AnalysisDisplayProps {
   riskLevels: RiskLevel[];

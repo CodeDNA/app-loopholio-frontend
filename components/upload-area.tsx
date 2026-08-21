@@ -3,10 +3,10 @@
 import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ConnectionStatus } from "@/types/connection-status";
+import { ConnectionStatus } from "@/types-and-constants/connection-status";
 import { Spinner } from "@/components/ui/spinner";
 import { SelectComponent } from "@/components/ui/custom/select-component";
-import { TEXT_INPUT_TYPE } from "@/types/text-input-type.enum";
+import { TEXT_INPUT_TYPE } from "@/types-and-constants/text-input-type.enum";
 interface UploadAreaProps {
   onAnalyze: (text: string, isUrl: boolean, file?: File) => void;
   isLoading: boolean;

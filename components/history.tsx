@@ -1,6 +1,6 @@
 import { HistorySidebar } from "@/components/history-sidebar";
 import { cn } from "@/lib/utils";
-import { ConnectionStatus } from "@/types/connection-status";
+import { ConnectionStatus } from "@/types-and-constants/connection-status";
 
 interface HistoryWrapperProps {
   historyItems: any;
@@ -79,7 +79,10 @@ export function HistoryWrapper({
           onDelete={handleDeleteItem}
           onRename={handleRenameItem}
           streaming={currentAnalysis?.isStreaming}
-          handleNewAnalysis={handleNewAnalysis}
+          handleNewAnalysis={() => {
+            handleNewAnalysis();
+            setSidebarOpen(false);
+          }}
           isLoading={isLoading}
         />
       </div>
