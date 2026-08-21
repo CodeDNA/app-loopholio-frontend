@@ -508,7 +508,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
           onWheel={handleForegroundWheel}
           className="sticky bottom-0 bg-transparent backdrop-blur-sm px-6 z-30"
         >
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto mb-15 lg:mb-0">
             <UploadArea
               uploadAreaBackGroungClass={uploadAreaBackGroungClass} // FEATURE FLAG
               onAnalyze={handleAnalyze}
