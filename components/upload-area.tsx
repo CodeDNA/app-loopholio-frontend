@@ -371,7 +371,7 @@ export function UploadArea({
 
       <div className="flex justify-between items-centre">
         <div>
-          <p className="p-2 text-sm text-foreground">{FILE_SIZE_INSTRUCTION}</p>
+          {/* <p className="p-2 text-sm text-foreground">{FILE_SIZE_INSTRUCTION}</p> */}
           {inputError && (
             <p className="p-2 text-red-500 font-medium">{inputError}</p>
           )}

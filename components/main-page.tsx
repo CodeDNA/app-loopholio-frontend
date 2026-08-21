@@ -441,7 +441,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
   return (
     <main
       className={cn(
-        "h-svh flex flex-col lg:flex-row overflow-hidden",
+        "h-dvh flex flex-col lg:flex-row overflow-hidden",
         backgroundClass, // FEATURE FLAG
       )}
     >
