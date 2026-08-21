@@ -31,10 +31,19 @@ export function SelectComponent({
       <SelectTrigger>
         <SelectValue placeholder="Text" />
       </SelectTrigger>
-      <SelectContent className="text-teal-500 bg-teal-800">
+      <SelectContent
+        alignItemWithTrigger={false}
+        className="text-teal-500 z-auto"
+        side="top"
+        sideOffset={10}
+      >
         {items.map((item) => {
           return (
-            <SelectItem key={item.value} value={item.value}>
+            <SelectItem
+              className="data-highlighted:bg-teal-800  data-highlighted:text-white data-highlighted:font-bold"
+              key={item.value}
+              value={item.value}
+            >
               {item.label}
             </SelectItem>
           );
