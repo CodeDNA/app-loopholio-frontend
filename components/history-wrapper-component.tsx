@@ -42,7 +42,7 @@ export function HistoryWrapper({
           selectedId={currentAnalysis?.id || null}
           onSelect={handleHistorySelect}
           onClear={handleClearHistory}
-          onDelete={handleDeleteItem}
+          onDelete={(id: string) => handleDeleteItem(id)}
           onRename={handleRenameItem}
           streaming={currentAnalysis?.isStreaming}
           handleNewAnalysis={handleNewAnalysis}
@@ -76,7 +76,7 @@ export function HistoryWrapper({
             setSidebarOpen(false);
           }}
           onClear={handleClearHistory}
-          onDelete={handleDeleteItem}
+          onDelete={(id: string) => handleDeleteItem(id)}
           onRename={handleRenameItem}
           streaming={currentAnalysis?.isStreaming}
           handleNewAnalysis={() => {

@@ -19,7 +19,7 @@ interface HistorySidebarProps {
   selectedId: string | null;
   onSelect: (id: string) => void;
   onClear: () => void;
-  onDelete?: (id: string) => void;
+  onDelete: (id: string) => void;
   onRename?: (id: string, newName: string) => void;
   streaming?: boolean;
   mobileView?: boolean;
@@ -63,10 +63,7 @@ export function HistorySidebar({
   };
 
   const handleDelete = (id: string) => {
-    // console.log("Delete Clicked");
-    if (onDelete) {
-      onDelete(id);
-    }
+    onDelete(id);
     setOpenMenuId(null);
   };
 
@@ -117,7 +114,11 @@ export function HistorySidebar({
             </div>
             {items.length > 0 && (
               <Button
-                onClick={onClear}
+                disabled={isLoading}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClear();
+                }}
                 variant="destructive"
                 className={"text-xs py-1 h-auto"}
               >
@@ -152,7 +153,7 @@ export function HistorySidebar({
                     handleRenameSave={handleRenameSave}
                     onSelect={onSelect}
                     handleRenameStart={handleRenameStart}
-                    handleDelete={handleDelete}
+                    handleDelete={(id: string) => handleDelete(id)}
                     error={item.error}
                     selectedId={selectedId}
                     streaming={streaming}

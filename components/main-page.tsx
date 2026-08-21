@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { UploadArea } from "@/components/upload-area";
 import { AnalysisDisplay } from "@/components/analysis-display";
-import { HistoryWrapper } from "@/components/history";
+import { HistoryWrapper } from "@/components/history-wrapper-component";
 import { Analysis, HistoryItem, RiskLevel } from "@/lib/types/analysis";
 import { HeaderMobile } from "@/components/header-mobile";
 import { ConnectionStatus } from "@/lib/types/connection-status";
@@ -16,6 +16,8 @@ import {
   UPLOAD_AREA_BACKGROUNDS,
 } from "@/lib/classes/background-classes";
 import { FEATURE_FLAGS_ENUM } from "@/lib/flags/flags.enum";
+import { ConfirmationDialog } from "@/components/ui/custom/confirmation-dialog";
+import { ConfirmationDialogArgs } from "@/lib/types/confirmation-dialog-args";
 
 const STORAGE_KEY = "tos_analysis_history";
 interface MainPageProps {
@@ -52,6 +54,10 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
   const [analysisProgress, setAnalysisProgress] = useState<number>(1);
   const POLL_INTERVAL_MS = 60000; // milliseconds
   const backgroundRef = useRef<HTMLDivElement>(null);
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
+    useState(false);
+  const [confirmationDialogProps, setConfirmationDialogProps] =
+    useState<ConfirmationDialogArgs>({});
 
   // Check backend connection status
   useEffect(() => {
@@ -342,22 +348,63 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
     }
   };
 
-  const handleClearHistory = () => {
+  const deleteAllHistoryItems = () => {
     if (!currentAnalysis?.isStreaming) {
-      if (confirm("Are you sure you want to clear all analysis history?")) {
-        setAnalyses([]);
-        setCurrentAnalysis(null);
-      }
+      setAnalyses([]);
+      setCurrentAnalysis(null);
     }
   };
 
-  const handleDeleteItem = (id: string) => {
+  const deleteOneHistoryItem = (id: string) => {
     setAnalyses((prev) => {
       const updated = prev.filter((a) => a.id !== id);
       if (currentAnalysis?.id === id) {
         setCurrentAnalysis(updated.length > 0 ? updated[0] : null);
       }
       return updated;
+    });
+  };
+
+  function handleDeletionConfirmed(
+    res: boolean,
+    deleteAll?: boolean,
+    id?: string,
+  ) {
+    setIsConfirmationDialogOpen(false);
+    if (res) {
+      if (deleteAll) {
+        deleteAllHistoryItems();
+      } else if (id) {
+        deleteOneHistoryItem(id);
+      }
+    }
+  }
+
+  const openConfirmationDialog = (args: ConfirmationDialogArgs) => {
+    setConfirmationDialogProps(args);
+    setIsConfirmationDialogOpen(true);
+  };
+
+  const handleDeleteItem = (deleteAll: boolean, id?: string) => {
+    const description = !deleteAll
+      ? [
+          "Are you sure you want to delete this analysis?",
+          "This action cannot be undone.",
+        ]
+      : [
+          "Are you sure you want to delete all analyses?",
+          "This action cannot be undone.",
+        ];
+    const title = !deleteAll ? "Delete analysis?" : "Delete all analyses?";
+
+    openConfirmationDialog({
+      deleteAll: deleteAll,
+      title: title,
+      description: description,
+      cancelText: "Cancel",
+      confirmText: !deleteAll ? "Delete" : "Delete All",
+      critical: true,
+      id: id,
     });
   };
 
@@ -410,8 +457,8 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         historyItems={historyItems}
         currentAnalysis={currentAnalysis}
         handleHistorySelect={handleHistorySelect}
-        handleClearHistory={handleClearHistory}
-        handleDeleteItem={handleDeleteItem}
+        handleClearHistory={() => handleDeleteItem(true)}
+        handleDeleteItem={(id: string) => handleDeleteItem(false, id)}
         handleRenameItem={handleRenameItem}
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
@@ -471,6 +518,21 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
           </div>
         </div>
       </div>
+      {isConfirmationDialogOpen && (
+        <ConfirmationDialog
+          deleteAll={confirmationDialogProps.deleteAll || false}
+          id={confirmationDialogProps.id || ""}
+          title={confirmationDialogProps.title}
+          description={confirmationDialogProps.description}
+          cancelText={confirmationDialogProps.cancelText}
+          confirmText={confirmationDialogProps.confirmText}
+          critical={confirmationDialogProps.critical}
+          open={true}
+          onConfirm={(res: boolean, deleteAll: boolean, id: string) =>
+            handleDeletionConfirmed(res, deleteAll, id)
+          }
+        />
+      )}
     </main>
   );
 }

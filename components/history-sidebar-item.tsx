@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Pencil, Trash2, TriangleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { ConfirmationDialog } from "@/components/ui/custom/confirmation-dialog";
 
 interface HistorySideBarItemProps {
   item: any;
@@ -39,31 +38,6 @@ export function HistorySideBarItem({
   error,
 }: HistorySideBarItemProps) {
   const menuRef = useRef<HTMLDivElement>(null);
-  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
-    useState(false);
-  const [confirmationDialogProps, setConfirmationDialogProps] =
-    useState<ConfirmationDialogArgs>({});
-
-  interface ConfirmationDialogArgs {
-    title?: string;
-    description?: string;
-    cancelText?: string;
-    confirmText?: string;
-    critical?: boolean;
-    onConfirm?: () => void | Promise<void>;
-  }
-
-  const openConfirmationDialog = (args: ConfirmationDialogArgs) => {
-    setConfirmationDialogProps(args);
-    setIsConfirmationDialogOpen(true);
-  };
-
-  async function handleConfirm(res: boolean) {
-    setIsConfirmationDialogOpen(false);
-    if (res) {
-      handleDelete(item.id);
-    }
-  }
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -191,14 +165,7 @@ export function HistorySideBarItem({
                   <div
                     onClick={(e) => {
                       e.stopPropagation();
-                      openConfirmationDialog({
-                        title: "Delete Analysis?",
-                        description:
-                          "Are you sure you want to delete this analysis? This action cannot be undone.",
-                        cancelText: "Cancel",
-                        confirmText: "Delete",
-                        critical: true,
-                      });
+                      handleDelete(item.id);
                     }}
                     className="flex gap-1 items-center w-full text-left px-4 py-2 text-xs hover:bg-red-500/10 transition-all text-red-400 last:rounded-b-lg border-t border-border/50"
                   >
@@ -210,17 +177,6 @@ export function HistorySideBarItem({
             </div>
           </div>
         </div>
-      )}
-      {isConfirmationDialogOpen && (
-        <ConfirmationDialog
-          title={confirmationDialogProps.title}
-          description={confirmationDialogProps.description}
-          cancelText={confirmationDialogProps.cancelText}
-          confirmText={confirmationDialogProps.confirmText}
-          critical={confirmationDialogProps.critical}
-          open={isConfirmationDialogOpen}
-          onConfirm={(res: boolean) => handleConfirm(res)}
-        />
       )}
     </div>
   );

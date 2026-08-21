@@ -7,34 +7,46 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 
 interface ConfirmationDialogProps {
   title?: string;
-  description?: string;
+  description?: string[];
   cancelText?: string;
   confirmText?: string;
   critical?: boolean;
   open: boolean;
   onConfirm: any;
+  id: string;
+  deleteAll: boolean;
 }
+
 export function ConfirmationDialog({
   title = "Are you sure?",
-  description = "This action cannot be undone. Are you absolutely sure you want to do this?",
+  description = [
+    "This action cannot be undone. Are you absolutely sure you want to do this?",
+  ],
   cancelText = "Cancel",
   confirmText = "Continue",
   critical = false,
   open,
   onConfirm,
+  id = "",
+  deleteAll,
 }: ConfirmationDialogProps) {
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          <AlertDialogTitle className={cn(critical ? "text-red-500/70" : "")}>
+            {title}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {description.map((item, index) => {
+              return <p key={index}>{item}</p>;
+            })}
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel
@@ -44,7 +56,7 @@ export function ConfirmationDialog({
             {cancelText}
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => onConfirm(true)}
+            onClick={() => onConfirm(true, deleteAll, id)}
             className={cn(
               "text-foreground font-semibold",
               critical
