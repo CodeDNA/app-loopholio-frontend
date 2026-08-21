@@ -7,22 +7,21 @@ import { ConnectionStatus } from "@/lib/types/connection-status";
 import { Spinner } from "@/components/ui/spinner";
 import { SelectComponent } from "@/components/ui/custom/select-component";
 import { TEXT_INPUT_TYPE } from "@/lib/types/text-input-type.enum";
+import {
+  MIN_TEXT_LENGTH,
+  MAX_TEXT_LENGTH,
+  MAX_FILE_SIZE_BYTES,
+  FILE_SIZE_INSTRUCTION,
+  FILE_SIZE_ERROR_MESSAGE,
+  MAX_TEXT_LENGTH_ERROR,
+  formatK,
+} from "@/lib/constants/upload-area-constants";
 interface UploadAreaProps {
   onAnalyze: (text: string, isUrl: boolean, file?: File) => void;
   isLoading: boolean;
   backendStatus: ConnectionStatus;
   uploadAreaBackGroungClass: string;
 }
-
-const MAX_FILE_SIZE_MB = 5;
-const MIN_TEXT_LENGTH = 100;
-const MAX_TEXT_LENGTH = 50000;
-const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
-const formatK = (num: number) => (num >= 1000 ? num / 1000 + "K" : num);
-
-const FILE_SIZE_INSTRUCTION = `Max file size: ${MAX_FILE_SIZE_MB} MB | Text length: Min - ${MIN_TEXT_LENGTH}, Max - ${formatK(MAX_TEXT_LENGTH)}`;
-const FILE_SIZE_ERROR_MESSAGE = `[ ERROR: Max file size exceeded! File must be smaller than ${MAX_FILE_SIZE_MB} Mb ]`;
-const MAX_TEXT_LENGTH_ERROR = `[ ERROR: Max allowed text length: ${formatK(MAX_TEXT_LENGTH)} characters ]`;
 
 export function UploadArea({
   onAnalyze,
