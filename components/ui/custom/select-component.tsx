@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Select,
   SelectContent,
@@ -14,15 +13,18 @@ interface SelectComponentProps {
   selectedValue: any;
   items: Items[];
   onValueChange: any;
+  disabled: boolean;
 }
 
 export function SelectComponent({
   selectedValue,
   items,
   onValueChange,
+  disabled = false,
 }: SelectComponentProps) {
   return (
     <Select
+      disabled={disabled}
       value={selectedValue}
       onValueChange={(value) => {
         if (value) onValueChange(value);

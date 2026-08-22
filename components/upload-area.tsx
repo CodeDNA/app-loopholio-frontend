@@ -326,6 +326,7 @@ export function UploadArea({
               type="url"
               className={inputClasses}
               placeholder="Type/paste Url"
+              disabled={isLoading}
             />
           )}
         </div>
@@ -333,6 +334,7 @@ export function UploadArea({
         {/* Select component */}
         <div className="bg-transparent text-muted-foreground hover:text-teal-500 font-semibold mr-1">
           <SelectComponent
+            disabled={isLoading}
             selectedValue={isTextOrURL}
             items={items}
             onValueChange={(val: TEXT_INPUT_TYPE) => {
