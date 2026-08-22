@@ -98,7 +98,7 @@ export function RiskItemCard({ risk }: { risk: RiskLevel }) {
                 <p className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider mb-2">
                   Source Section
                 </p>
-                <div className="rounded-lg p-3 border border-muted/20">
+                <div className="rounded-lg p-3 border border-muted/20 wrap-break-word">
                   <p className="text-sm text-muted-foreground font-mono leading-relaxed italic">
                     {risk.section_title}
                   </p>
