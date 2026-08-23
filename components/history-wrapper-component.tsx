@@ -1,6 +1,7 @@
 import { HistorySidebar } from "@/components/history-sidebar";
 import { cn } from "@/lib/utils";
 import { ConnectionStatus } from "@/lib/types/connection-status.enum";
+import { motion } from "motion/react";
 
 interface HistoryWrapperProps {
   historyItems: any;
@@ -58,7 +59,14 @@ export function HistoryWrapper({
         />
       )}
       {/* MOBILE - History Sidebar */}
-      <div
+      <motion.div
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        onDragEnd={(_, info) => {
+          if (info.offset.x < -40) {
+            setSidebarOpen(false);
+          }
+        }}
         className={cn(
           `fixed left-0 top-0 h-screen w-[20.8rem] border-r border-border z-40 lg:hidden transform transition-transform duration-300 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -85,7 +93,7 @@ export function HistoryWrapper({
           }}
           isLoading={isLoading}
         />
-      </div>
+      </motion.div>
     </>
   );
 }
