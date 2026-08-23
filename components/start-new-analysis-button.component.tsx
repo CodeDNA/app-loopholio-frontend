@@ -17,24 +17,31 @@ export function StartNewAnalysisButton({
       disabled={isLoading}
       onClick={handleNewAnalysis}
       className={cn(
-        "shrink-0 flex items-center text-foreground group",
-        fullView ? "px-4 py-4 hover:text-emerald-500 " : "rounded-full",
+        "group shrink-0 flex items-center text-foreground",
+        fullView ? "px-4 py-4" : "rounded-full",
       )}
     >
       <div
         className={cn(
-          "flex items-center w-full",
+          "flex items-center w-full space-x-2",
           fullView
-            ? "group-hover:bg-muted-foreground/20 gap-2 rounded-lg   p-2"
+            ? isLoading
+              ? "text-muted group-hover:bg-none p-2"
+              : "group-hover:bg-muted-foreground/20 group-hover:text-emerald-500 gap-2 rounded-lg p-2"
             : "",
         )}
       >
         <SquarePen
-          className={cn("border-transparent", fullView ? "size-4" : "size-9")}
+          className={cn("border-transparent", fullView ? "size-4" : "size-6")}
         />
         {fullView && (
           <p className="border-2 border-transparent font-semibold">
             Start New Analysis
+          </p>
+        )}
+        {!fullView && (
+          <p className="border-2 border-transparent text-md font-semibold">
+            New
           </p>
         )}
       </div>

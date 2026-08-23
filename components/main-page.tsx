@@ -470,6 +470,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
       />
 
       <HeaderMobile
+        showNewAnalysisButton={!!currentAnalysis}
         isLoading={isLoading}
         backendStatus={backendStatus}
         sidebarOpen={sidebarOpen}

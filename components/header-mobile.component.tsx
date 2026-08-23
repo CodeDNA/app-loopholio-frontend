@@ -8,6 +8,7 @@ interface HeaderMobileProps {
   setSidebarOpen: any;
   backendStatus: ConnectionStatus;
   isLoading: boolean;
+  showNewAnalysisButton: boolean;
   handleNewAnalysis: () => void;
 }
 export function HeaderMobile({
@@ -15,6 +16,7 @@ export function HeaderMobile({
   sidebarOpen,
   backendStatus,
   isLoading,
+  showNewAnalysisButton,
   handleNewAnalysis,
 }: HeaderMobileProps) {
   return (
@@ -44,7 +46,7 @@ export function HeaderMobile({
           <h1 className="text-lg font-bold text-primary">LoopHolio 1.0</h1>
         </div>
         <div className="w-10" />
-        {!sidebarOpen && (
+        {!sidebarOpen && showNewAnalysisButton && !isLoading && (
           <Floater>
             <StartNewAnalysisButton
               fullView={sidebarOpen}
