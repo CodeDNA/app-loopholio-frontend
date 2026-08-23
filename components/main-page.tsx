@@ -66,11 +66,22 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
   // Check backend connection status
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | null = null;
+    let controller: AbortController | null = null;
+
     const checkHealth = async () => {
+      // if analysis is running that means the backend is up and running, no need to call the health api
+      if (currentAnalysis?.isStreaming) {
+        setBackendStatus(ConnectionStatus.CONNECTED);
+        return;
+      }
+      controller?.abort();
+      controller = new AbortController();
+
       try {
         const response = await fetch("/api/health", {
           method: "GET",
           cache: "no-store",
+          signal: controller.signal,
         });
 
         if (response.ok) {
@@ -78,16 +89,23 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         } else {
           setBackendStatus(ConnectionStatus.DISCONNECTED);
         }
-      } catch {
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "Abort Error") {
+          return;
+        }
         setBackendStatus(ConnectionStatus.DISCONNECTED);
       }
     };
 
     const startPolling = () => {
-      if (intervalId) {
-        clearInterval(intervalId);
+      stopPolling();
+      if (currentAnalysis?.isStreaming) {
+        setBackendStatus(ConnectionStatus.CONNECTED);
+        return;
       }
+
       checkHealth();
+
       intervalId = setInterval(checkHealth, POLL_INTERVAL_MS);
     };
 
@@ -96,6 +114,8 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         clearInterval(intervalId);
         intervalId = null;
       }
+      controller?.abort();
+      controller = null;
     };
 
     // If the browser is not visible, stop polling to avoid un-necessary backend calls
