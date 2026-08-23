@@ -1,12 +1,10 @@
 import { RiskLevel } from "@/lib/types/analysis.interface";
 import { useState } from "react";
-import { ChevronUp } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { cn } from "@/lib/utils";
 
 export function RiskItemCard({ risk }: { risk: RiskLevel }) {
   const [viewFullText, setViewFullText] = useState(false);

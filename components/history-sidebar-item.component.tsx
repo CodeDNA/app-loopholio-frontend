@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Pencil, Trash2, TriangleAlert } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 interface HistorySideBarItemProps {
   item: any;
