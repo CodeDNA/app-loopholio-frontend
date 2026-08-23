@@ -470,9 +470,11 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
       />
 
       <HeaderMobile
+        isLoading={isLoading}
         backendStatus={backendStatus}
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
+        handleNewAnalysis={handleNewAnalysis}
       />
       {/* Main Result Content Area - Analysis Results*/}
       <div className="flex-1 flex flex-col relative z-10 overflow-hidden bg-transparent">
@@ -513,12 +515,14 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
           className="sticky bottom-0 bg-transparent backdrop-blur-sm px-6 z-30"
         >
           <div className="max-w-3xl mx-auto">
-            <UploadArea
-              uploadAreaBackGroungClass={uploadAreaBackGroungClass} // FEATURE FLAG
-              onAnalyze={handleAnalyze}
-              isLoading={isLoading}
-              backendStatus={backendStatus}
-            />
+            {!currentAnalysis && (
+              <UploadArea
+                uploadAreaBackGroungClass={uploadAreaBackGroungClass} // FEATURE FLAG
+                onAnalyze={handleAnalyze}
+                isLoading={isLoading}
+                backendStatus={backendStatus}
+              />
+            )}
           </div>
         </div>
       </div>

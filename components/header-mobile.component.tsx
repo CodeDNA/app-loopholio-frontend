@@ -1,15 +1,21 @@
 import { ConnectionPill } from "@/components/connection-pill.component";
 import { ConnectionStatus } from "@/lib/types/connection-status.enum";
+import { StartNewAnalysisButton } from "@/components/start-new-analysis-button.component";
+import { Floater } from "./ui/custom/floater.component";
 
 interface HeaderMobileProps {
   sidebarOpen: boolean;
   setSidebarOpen: any;
   backendStatus: ConnectionStatus;
+  isLoading: boolean;
+  handleNewAnalysis: () => void;
 }
 export function HeaderMobile({
   setSidebarOpen,
   sidebarOpen,
   backendStatus,
+  isLoading,
+  handleNewAnalysis,
 }: HeaderMobileProps) {
   return (
     <>
@@ -38,6 +44,15 @@ export function HeaderMobile({
           <h1 className="text-lg font-bold text-primary">LoopHolio 1.0</h1>
         </div>
         <div className="w-10" />
+        {!sidebarOpen && (
+          <Floater>
+            <StartNewAnalysisButton
+              fullView={sidebarOpen}
+              isLoading={isLoading}
+              handleNewAnalysis={handleNewAnalysis}
+            />
+          </Floater>
+        )}
         <ConnectionPill backendStatus={backendStatus} />
       </div>
     </>

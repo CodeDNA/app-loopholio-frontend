@@ -13,6 +13,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { StartNewAnalysisButton } from "@/components/start-new-analysis-button.component";
 
 interface HistorySidebarProps {
   items: HistoryItem[];
@@ -83,18 +84,10 @@ export function HistorySidebar({
         {!mobileView && <ConnectionPill backendStatus={backendStatus} />}
       </div>
 
-      <button
-        disabled={isLoading}
-        onClick={handleNewAnalysis}
-        className="px-4 py-4 shrink-0 flex items-center text-foreground group hover:text-emerald-500"
-      >
-        <div className="flex items-center w-full group-hover:bg-muted-foreground/20 gap-2 rounded-lg p-2">
-          <CircleFadingPlus className="size-4 border-transparent" />
-          <p className="border-2 border-transparent font-semibold">
-            Start New Analysis
-          </p>
-        </div>
-      </button>
+      <StartNewAnalysisButton
+        isLoading={isLoading}
+        handleNewAnalysis={handleNewAnalysis}
+      />
 
       {/* Recents Header */}
       <Collapsible open={isOpen}>
