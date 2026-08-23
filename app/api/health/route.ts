@@ -15,10 +15,11 @@ export async function GET() {
   }
 
   try {
+    const timeout = 5000;
     const response = await fetch(`${backendUrl}/health`, {
       method: "GET",
       cache: "no-store",
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(timeout),
     });
 
     if (!response.ok) {

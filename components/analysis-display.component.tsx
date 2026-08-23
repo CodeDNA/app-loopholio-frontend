@@ -96,13 +96,6 @@ export function AnalysisDisplay({
           <RiskItemCard key={index} risk={riskItem} />
         ))}
       </div>
-
-      {isStreaming && (
-        <div className="flex items-center justify-center gap-2 py-4">
-          <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-          <p className="text-sm text-muted-foreground">Analyzing document...</p>
-        </div>
-      )}
     </div>
   );
   console.log("riskLevels");
