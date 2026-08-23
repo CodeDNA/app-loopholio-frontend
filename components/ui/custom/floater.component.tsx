@@ -5,7 +5,7 @@ interface FloaterProps {
 export function Floater({ children }: FloaterProps) {
   return (
     children && (
-      <div className="z-50 flex items-center justify-center wrap-anywhere fixed top-20 right-10 rounded-full space-x-2">
+      <div className="z-50 flex items-center justify-center wrap-anywhere fixed top-20 right-10 rounded-full space-x-2 bg-teal-500 p-2 opacity-90">
         {children}
       </div>
     )
