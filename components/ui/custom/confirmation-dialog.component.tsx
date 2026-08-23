@@ -44,7 +44,11 @@ export function ConfirmationDialog({
           </AlertDialogTitle>
           <AlertDialogDescription>
             {description.map((item, index) => {
-              return <p key={index}>{item}</p>;
+              return (
+                <span className="flex" key={index}>
+                  {item}
+                </span>
+              );
             })}
           </AlertDialogDescription>
         </AlertDialogHeader>
