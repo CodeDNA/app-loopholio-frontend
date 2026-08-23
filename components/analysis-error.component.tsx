@@ -12,7 +12,7 @@ export function ErrorComponent({ error }: ErrorComponentProps) {
         </h3>
       </div>
       <div className="space-y-4">
-        <div className="border-2 border-red-500/80 rounded-2xl p-6 space-y-4 bg-transparent animate-in fade-in slide-in-from-bottom-2">
+        <div className="border-2 border-red-500/80 rounded-2xl p-6 space-y-4 bg-transparent animate-in fade-in slide-in-from-bottom-2 wrap-break-word">
           <h3 className="text-red-500 font-mono border border-foreground/50 rounded-md p-2 bg--muted-red-600 text-sm">
             An error occured while processing your request!
           </h3>
