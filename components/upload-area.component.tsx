@@ -3,9 +3,9 @@
 import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ConnectionStatus } from "@/lib/types/connection-status";
+import { ConnectionStatus } from "@/lib/types/connection-status.enum";
 import { Spinner } from "@/components/ui/spinner";
-import { SelectComponent } from "@/components/ui/custom/select-component";
+import { SelectComponent } from "@/components/ui/custom/select.component";
 import { TEXT_INPUT_TYPE } from "@/lib/types/text-input-type.enum";
 import {
   MIN_TEXT_LENGTH,
@@ -15,7 +15,7 @@ import {
   FILE_SIZE_ERROR_MESSAGE,
   MAX_TEXT_LENGTH_ERROR,
   formatK,
-} from "@/lib/constants/upload-area-constants";
+} from "@/lib/constants/upload-area.constants";
 interface UploadAreaProps {
   onAnalyze: (text: string, isUrl: boolean, file?: File) => void;
   isLoading: boolean;

@@ -1,4 +1,4 @@
-import { Analysis } from "@/lib/types/analysis";
+import { Analysis } from "@/lib/types/analysis.interface";
 
 interface DocumentPreviewComponentProps {
   viewFullText: boolean;

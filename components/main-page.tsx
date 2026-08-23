@@ -1,23 +1,27 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { UploadArea } from "@/components/upload-area";
-import { AnalysisDisplay } from "@/components/analysis-display";
+import { UploadArea } from "@/components/upload-area.component";
+import { AnalysisDisplay } from "@/components/analysis-display.component";
 import { HistoryWrapper } from "@/components/history-wrapper-component";
-import { Analysis, HistoryItem, RiskLevel } from "@/lib/types/analysis";
-import { HeaderMobile } from "@/components/header-mobile";
-import { ConnectionStatus } from "@/lib/types/connection-status";
-import { ProcessingComponent } from "@/components/processing-component";
-import { NewAnalysisComponent } from "@/components/new-analysis-component";
-import { DocumentPreviewComponent } from "@/components/document-preview-component";
+import {
+  Analysis,
+  HistoryItem,
+  RiskLevel,
+} from "@/lib/types/analysis.interface";
+import { HeaderMobile } from "@/components/header-mobile.component";
+import { ConnectionStatus } from "@/lib/types/connection-status.enum";
+import { ProcessingComponent } from "@/components/processing.component";
+import { NewAnalysisComponent } from "@/components/new-analysis.component";
+import { DocumentPreviewComponent } from "@/components/document-preview.component";
 import { cn } from "@/lib/utils";
 import {
   BACKGROUNDS,
   UPLOAD_AREA_BACKGROUNDS,
-} from "@/lib/classes/background-classes";
+} from "@/lib/classes/background.classes";
 import { FEATURE_FLAGS_ENUM } from "@/lib/flags/flags.enum";
-import { ConfirmationDialog } from "@/components/ui/custom/confirmation-dialog";
-import { ConfirmationDialogArgs } from "@/lib/types/confirmation-dialog-args";
+import { ConfirmationDialog } from "@/components/ui/custom/confirmation-dialog.component";
+import { ConfirmationDialogArgs } from "@/lib/types/confirmation-dialog-args.interface";
 
 const STORAGE_KEY = "tos_analysis_history";
 interface MainPageProps {

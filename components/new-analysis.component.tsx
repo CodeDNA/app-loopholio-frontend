@@ -6,7 +6,7 @@ export function NewAnalysisComponent() {
     <div className="flex flex-col items-center justify-center h-full">
       <Image
         className="w-full rounded-xl opacity-80 min-w-100 min-h-50 max-w-200 max-h-100"
-        src="/images/no_analysis_dark_no_bg.png"
+        src="/images/loopholio-guy.png"
         alt="Company Logo"
         loading="eager"
         width={800}

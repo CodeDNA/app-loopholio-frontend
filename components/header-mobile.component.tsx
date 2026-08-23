@@ -1,5 +1,5 @@
-import { ConnectionPill } from "@/components/connection-pill";
-import { ConnectionStatus } from "@/lib/types/connection-status";
+import { ConnectionPill } from "@/components/connection-pill.component";
+import { ConnectionStatus } from "@/lib/types/connection-status.enum";
 
 interface HeaderMobileProps {
   sidebarOpen: boolean;

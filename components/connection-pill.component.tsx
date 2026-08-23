@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { ConnectionStatus } from "@/lib/types/connection-status";
+import { ConnectionStatus } from "@/lib/types/connection-status.enum";
 import { Spinner } from "@/components/ui/spinner";
 
 interface ConnectionPillProps {

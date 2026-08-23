@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { HistoryItem } from "@/lib/types/analysis";
+import { HistoryItem } from "@/lib/types/analysis.interface";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ConnectionPill } from "@/components/connection-pill";
-import { ConnectionStatus } from "@/lib/types/connection-status";
-import { HistorySideBarItem } from "@/components/history-sidebar-item";
+import { ConnectionPill } from "@/components/connection-pill.component";
+import { ConnectionStatus } from "@/lib/types/connection-status.enum";
+import { HistorySideBarItem } from "@/components/history-sidebar-item.component";
 import { ChevronDown, ChevronRight, CircleFadingPlus } from "lucide-react";
 import {
   Collapsible,
