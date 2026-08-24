@@ -1,4 +1,4 @@
-import MainPage from "@/components/main-page";
+import MainPage from "@/components/app-shell.component";
 import { FEATURE_FLAGS_ENUM } from "@/lib/flags/flags.enum";
 import { ff_bg_version } from "@/lib/flags/flags";
 

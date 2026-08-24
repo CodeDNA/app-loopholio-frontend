@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ConnectionPill } from "@/components/connection-pill.component";
 import { ConnectionStatus } from "@/lib/types/connection-status.enum";
-import { HistorySideBarItem } from "@/components/history-sidebar-item.component";
+import { HistorySideBarItem } from "@/components/history-sidebar/history-sidebar-item.component";
 import { ChevronDown, ChevronRight, CircleFadingPlus } from "lucide-react";
 import {
   Collapsible,

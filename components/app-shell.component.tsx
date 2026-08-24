@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { UploadArea } from "@/components/upload-area.component";
-import { AnalysisDisplay } from "@/components/analysis-display.component";
-import { HistoryWrapper } from "@/components/history-wrapper-component";
+import { AnalysisDisplay } from "@/components/analysis-display/analysis-display.component";
+import { HistoryWrapper } from "@/components/history-sidebar/history-wrapper-component";
 import {
   Analysis,
   HistoryItem,
@@ -11,9 +11,9 @@ import {
 } from "@/lib/types/analysis.interface";
 import { HeaderMobile } from "@/components/header-mobile.component";
 import { ConnectionStatus } from "@/lib/types/connection-status.enum";
-import { ProcessingComponent } from "@/components/processing.component";
+import { ProcessingComponent } from "@/components/processing-progress.component";
 import { NewAnalysisComponent } from "@/components/new-analysis.component";
-import { DocumentPreviewComponent } from "@/components/document-preview.component";
+import { DocumentPreviewComponent } from "@/components/analysis-display/document-preview.component";
 import { cn } from "@/lib/utils";
 import {
   BACKGROUNDS,

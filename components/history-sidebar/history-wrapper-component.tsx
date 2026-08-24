@@ -1,4 +1,4 @@
-import { HistorySidebar } from "@/components/history-sidebar";
+import { HistorySidebar } from "@/components/history-sidebar/history-sidebar.component";
 import { cn } from "@/lib/utils";
 import { ConnectionStatus } from "@/lib/types/connection-status.enum";
 import { motion } from "motion/react";
