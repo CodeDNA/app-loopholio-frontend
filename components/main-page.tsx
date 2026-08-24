@@ -151,9 +151,9 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
           isStreaming: false,
         }));
         setAnalyses(processed);
-        if (processed.length > 0) {
-          setCurrentAnalysis(processed[0]);
-        }
+        // if (processed.length > 0) {
+        //   setCurrentAnalysis(processed[0]);
+        // }
       } catch (error) {
         console.error("Failed to load history:", error);
       }
