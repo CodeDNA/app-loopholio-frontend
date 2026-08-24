@@ -36,13 +36,17 @@ export function AnalysisDisplay({ analysis }: AnalysisDisplayProps) {
     setCurrentFilter(selectedFilter);
   };
 
+  const documentPreviewComponent = (
+    <DocumentPreviewComponent
+      viewFullText={viewFullText}
+      currentAnalysis={analysis}
+      setViewFullText={setViewFullText}
+    />
+  );
+
   const riskfoundComponent = (
     <>
-      <DocumentPreviewComponent
-        viewFullText={viewFullText}
-        currentAnalysis={analysis}
-        setViewFullText={setViewFullText}
-      />
+      {documentPreviewComponent}
       <div className="space-y-6">
         {/* Header */}
         <div className="border-b border-border pb-6">
@@ -135,11 +139,7 @@ export function AnalysisDisplay({ analysis }: AnalysisDisplayProps) {
   if (error) {
     return (
       <>
-        <DocumentPreviewComponent
-          viewFullText={viewFullText}
-          currentAnalysis={analysis}
-          setViewFullText={setViewFullText}
-        />
+        {documentPreviewComponent}
         <ErrorComponent error={error} />
       </>
     );
@@ -147,11 +147,7 @@ export function AnalysisDisplay({ analysis }: AnalysisDisplayProps) {
   if (riskLevels.length === 0) {
     return (
       <>
-        <DocumentPreviewComponent
-          viewFullText={viewFullText}
-          currentAnalysis={analysis}
-          setViewFullText={setViewFullText}
-        />
+        {documentPreviewComponent}
         {noRiskfoundComponent}
       </>
     );
@@ -159,11 +155,7 @@ export function AnalysisDisplay({ analysis }: AnalysisDisplayProps) {
   if (!isStreaming && riskLevels.length === 0) {
     return (
       <>
-        <DocumentPreviewComponent
-          viewFullText={viewFullText}
-          currentAnalysis={analysis}
-          setViewFullText={setViewFullText}
-        />
+        {documentPreviewComponent}
         {noRiskfoundComponent}
       </>
     );
