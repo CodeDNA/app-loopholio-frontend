@@ -411,14 +411,8 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
 
   const handleDeleteItem = (deleteAll: boolean, id?: string) => {
     const description = !deleteAll
-      ? [
-          "Are you sure you want to delete this analysis?",
-          "This action cannot be undone.",
-        ]
-      : [
-          "Are you sure you want to delete all analyses?",
-          "This action cannot be undone.",
-        ];
+      ? ["Are you sure you want to delete this analysis?"]
+      : ["Are you sure you want to delete all analyses?"];
     const title = !deleteAll ? "Delete analysis?" : "Delete all analyses?";
 
     openConfirmationDialog({

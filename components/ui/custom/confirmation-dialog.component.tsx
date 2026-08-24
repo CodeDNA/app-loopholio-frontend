@@ -24,9 +24,7 @@ interface ConfirmationDialogProps {
 
 export function ConfirmationDialog({
   title = "Are you sure?",
-  description = [
-    "This action cannot be undone. Are you absolutely sure you want to do this?",
-  ],
+  description = ["Are you sure you want to do this?"],
   cancelText = "Cancel",
   confirmText = "Continue",
   critical = false,
