@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ConnectionPill } from "@/components/connection-pill.component";
 import { ConnectionStatus } from "@/lib/types/connection-status.enum";
-import { HistorySideBarItem } from "@/components/history-sidebar/history-sidebar-item.component";
+import { HistorySidebarCard } from "@/components/history-sidebar/history-sidebar-card.component";
 import { ChevronDown, ChevronRight, CircleFadingPlus } from "lucide-react";
 import {
   Collapsible,
@@ -137,7 +137,7 @@ export function HistorySidebar({
             ) : (
               <div className="space-y-1 p-4 pb-15">
                 {items.map((item) => (
-                  <HistorySideBarItem
+                  <HistorySidebarCard
                     key={item.id}
                     item={item}
                     handleRenameSave={handleRenameSave}

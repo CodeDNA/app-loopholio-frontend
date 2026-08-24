@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Pencil, Trash2, TriangleAlert } from "lucide-react";
 import { useEffect, useRef } from "react";
 
-interface HistorySideBarItemProps {
+interface HistorySidebarCardProps {
   item: any;
   handleRenameSave: any;
   onSelect: any;
@@ -20,7 +20,7 @@ interface HistorySideBarItemProps {
   error: any;
 }
 
-export function HistorySideBarItem({
+export function HistorySidebarCard({
   item,
   handleRenameSave,
   onSelect,
@@ -36,7 +36,7 @@ export function HistorySideBarItem({
   openMenuId,
   mobileView,
   error,
-}: HistorySideBarItemProps) {
+}: HistorySidebarCardProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

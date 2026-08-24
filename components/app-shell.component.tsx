@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { UploadArea } from "@/components/upload-area.component";
 import { AnalysisDisplay } from "@/components/analysis-display/analysis-display.component";
-import { HistoryWrapper } from "@/components/history-sidebar/history-wrapper-component";
+import { HistorySidebarWrapper } from "@/components/history-sidebar/history-sidebar-wrapper-component";
 import {
   Analysis,
   HistoryItem,
@@ -468,7 +468,7 @@ export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-4xl opacity-3" />
       </div>
 
-      <HistoryWrapper
+      <HistorySidebarWrapper
         backgroundClass={backgroundClass} // FEATURE FLAG
         handleNewAnalysis={handleNewAnalysis}
         backendStatus={backendStatus}

@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { ConnectionStatus } from "@/lib/types/connection-status.enum";
 import { motion } from "motion/react";
 
-interface HistoryWrapperProps {
+interface HistorySidebarWrapperProps {
   historyItems: any;
   currentAnalysis: any;
   sidebarOpen: any;
@@ -18,7 +18,7 @@ interface HistoryWrapperProps {
   backgroundClass: string; //FEATURE FLAG
 }
 
-export function HistoryWrapper({
+export function HistorySidebarWrapper({
   historyItems,
   currentAnalysis,
   sidebarOpen,
@@ -31,7 +31,7 @@ export function HistoryWrapper({
   handleNewAnalysis,
   isLoading,
   backgroundClass, //FEATURE FLAG
-}: HistoryWrapperProps) {
+}: HistorySidebarWrapperProps) {
   return (
     <>
       {/* WEB - History Sidebar */}
