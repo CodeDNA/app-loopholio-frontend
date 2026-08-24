@@ -2,10 +2,21 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Terms of Service Analyzer",
+  title: "LoopHolio",
   description:
-    "Analyze Terms of Service documents and identify key risks, clauses, and compliance issues",
-  generator: "tosgotcha",
+    "Terms of Service analyzer that identifies the clauses that matter, explains the risks in plain language and shows exactly where each finding comes from.",
+  authors: [{ name: "Prabhakar Punj Lal", url: "https://www.codedna.io/" }],
+  creator: "CodeDNA",
+  applicationName: "LoopHolio",
+  generator: "Next.js",
+  keywords: [
+    "AI Agent",
+    "LoopHolio",
+    "Terms of Service analyzer",
+    "identify risks in terms of service",
+    "identify risks in lease",
+    "identify risks in terms of use",
+  ],
   icons: {
     icon: [
       {
