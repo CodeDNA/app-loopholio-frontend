@@ -1,4 +1,4 @@
-import MainPage from "@/components/app-shell.component";
+import { AppShell } from "@/components/app-shell.component";
 import { FEATURE_FLAGS_ENUM } from "@/lib/flags/flags.enum";
 import { ff_bg_version } from "@/lib/flags/flags";
 
@@ -8,7 +8,7 @@ export default async function Page() {
   FEATURE_FLAGS[FEATURE_FLAGS_ENUM.bgversion] = bgversion;
   return (
     <main>
-      <MainPage FEATURE_FLAGS={FEATURE_FLAGS} />
+      <AppShell FEATURE_FLAGS={FEATURE_FLAGS} />
     </main>
   );
 }

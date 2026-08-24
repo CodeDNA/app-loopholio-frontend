@@ -24,11 +24,11 @@ import { ConfirmationDialog } from "@/components/ui/custom/confirmation-dialog.c
 import { ConfirmationDialogArgs } from "@/lib/types/confirmation-dialog-args.interface";
 
 const STORAGE_KEY = "tos_analysis_history";
-interface MainPageProps {
+interface AppShellProps {
   FEATURE_FLAGS: Record<string, string>;
 }
 
-export default function MainPage({ FEATURE_FLAGS }: MainPageProps) {
+export function AppShell({ FEATURE_FLAGS }: AppShellProps) {
   const backgroundVersion = FEATURE_FLAGS[FEATURE_FLAGS_ENUM.bgversion];
   let backgroundClass = "";
   let uploadAreaBackGroungClass = "";

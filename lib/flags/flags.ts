@@ -37,18 +37,18 @@ import { vercelAdapter } from "@flags-sdk/vercel";
  * LHS: FEATURE_FLAGS dictionary key - same as added in the FEATURE_FLAGS_ENUM.
  *
  * >> STEP-5
- * Send the FEATURE_FLAGS dictinary created above to the MainPage('main-page.tsx')
+ * Send the FEATURE_FLAGS dictinary created above to the AppShell('app-shell.component.tsx')
  *
  ** ex:
- **   <MainPage FEATURE_FLAGS={FEATURE_FLAGS} />
+ **   <AppShell FEATURE_FLAGS={FEATURE_FLAGS} />
  *
  * >> STEP-6
  * Verify that we have the feature flags accessible inside components via FEATURE_FLAGS sent as props.
  *
  ** ex:
- ** export default function MainPage({ FEATURE_FLAGS }: MainPageProps)
+ ** export default function AppShell({ FEATURE_FLAGS }: AppShellProps)
  **    {
- **    ...main compoent...
+ **    ...AppShell component...
  *     ...VERIFY HERE...
  **     console.log(FEATURE_FLAGS[FEATURE_FLAGS_ENUM.bgversion])
  **    }
