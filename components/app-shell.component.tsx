@@ -13,7 +13,6 @@ import { HeaderMobile } from "@/components/header-mobile.component";
 import { ConnectionStatus } from "@/lib/types/connection-status.enum";
 import { ProcessingComponent } from "@/components/processing-progress.component";
 import { NewAnalysisComponent } from "@/components/new-analysis.component";
-import { DocumentPreviewComponent } from "@/components/analysis-display/document-preview.component";
 import { cn } from "@/lib/utils";
 import {
   BACKGROUNDS,
@@ -50,7 +49,6 @@ export function AppShell({ FEATURE_FLAGS }: AppShellProps) {
     useState<string>(initialProcessStatus);
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [viewFullText, setViewFullText] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [backendStatus, setBackendStatus] = useState<ConnectionStatus>(
     ConnectionStatus.CHECKING,
@@ -501,17 +499,12 @@ export function AppShell({ FEATURE_FLAGS }: AppShellProps) {
           {currentAnalysis && !currentAnalysis.isStreaming ? (
             // This div decides the max-width of the analyses container
             <div className="max-w-5xl mx-auto px-6 py-8 space-y-6">
-              <DocumentPreviewComponent
+              {/* <DocumentPreviewComponent
                 viewFullText={viewFullText}
                 currentAnalysis={currentAnalysis}
                 setViewFullText={setViewFullText}
-              />
-              <AnalysisDisplay
-                key={currentAnalysis.id}
-                riskLevels={currentAnalysis.riskLevels}
-                isStreaming={currentAnalysis.isStreaming}
-                error={currentAnalysis.error}
-              />
+              /> */}
+              <AnalysisDisplay analysis={currentAnalysis} />
             </div>
           ) : currentAnalysis && currentAnalysis.isStreaming ? (
             <ProcessingComponent

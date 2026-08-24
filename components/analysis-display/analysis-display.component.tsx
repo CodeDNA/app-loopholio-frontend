@@ -1,27 +1,24 @@
 "use client";
 
-import { RiskLevel } from "@/lib/types/analysis.interface";
+import { Analysis } from "@/lib/types/analysis.interface";
 import { ErrorComponent } from "@/components/analysis-display/analysis-error.component";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { RiskItemCard } from "@/components/analysis-display/risk_item_card.component";
 import { FILTERS } from "@/lib/types/filters.enum";
+import { DocumentPreviewComponent } from "@/components/analysis-display/document-preview.component";
 
 interface AnalysisDisplayProps {
-  riskLevels: RiskLevel[];
-  isStreaming: boolean;
-  error?: string;
+  analysis: Analysis;
 }
 
-export function AnalysisDisplay({
-  riskLevels,
-  isStreaming,
-  error,
-}: AnalysisDisplayProps) {
+export function AnalysisDisplay({ analysis }: AnalysisDisplayProps) {
+  const { riskLevels, isStreaming, error } = analysis;
   const highRisks = riskLevels.filter((r) => r.level === "High").length;
   const mediumRisks = riskLevels.filter((r) => r.level === "Medium").length;
   const lowRisks = riskLevels.filter((r) => r.level === "Low").length;
   const [currentFilter, setCurrentFilter] = useState<FILTERS>(FILTERS.ALL);
+  const [viewFullText, setViewFullText] = useState(false);
 
   const filteredRiskLevels = riskLevels.filter((risk) => {
     if (currentFilter === FILTERS.ALL) return true;
@@ -40,63 +37,74 @@ export function AnalysisDisplay({
   };
 
   const riskfoundComponent = (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="border-b border-border pb-6">
-        {/* Summary Stats */}
-        <div className="grid grid-cols-3 gap-3 mt-6">
-          {highRisks > 0 && (
-            <div
-              onClick={() => changeFilter(FILTERS.HIGH)}
-              className={cn(
-                "rounded-lg border border-red-500/30 p-3",
-                currentFilter === FILTERS.HIGH
-                  ? "bg-red-500/30"
-                  : "hover:bg-red-500/10",
-              )}
-            >
-              <p className="text-2xl font-bold text-red-400">{highRisks}</p>
-              <p className="text-xs text-muted-foreground">High Risk</p>
-            </div>
-          )}
-          {mediumRisks > 0 && (
-            <div
-              onClick={() => changeFilter(FILTERS.MEDIUM)}
-              className={cn(
-                "rounded-lg border border-amber-500/30 p-3",
-                currentFilter === FILTERS.MEDIUM
-                  ? "bg-amber-500/30"
-                  : "hover:bg-amber-500/10",
-              )}
-            >
-              <p className="text-2xl font-bold text-amber-400">{mediumRisks}</p>
-              <p className="text-xs text-muted-foreground">Medium Risk</p>
-            </div>
-          )}
-          {lowRisks > 0 && (
-            <div
-              onClick={() => changeFilter(FILTERS.LOW)}
-              className={cn(
-                "rounded-lg border border-emerald-500/30 p-3",
-                currentFilter === FILTERS.LOW
-                  ? "bg-emerald-500/30"
-                  : "hover:bg-emerald-500/10",
-              )}
-            >
-              <p className="text-2xl font-bold text-emerald-400">{lowRisks}</p>
-              <p className="text-xs text-muted-foreground">Low Risk</p>
-            </div>
-          )}
+    <>
+      <DocumentPreviewComponent
+        viewFullText={viewFullText}
+        currentAnalysis={analysis}
+        setViewFullText={setViewFullText}
+      />
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="border-b border-border pb-6">
+          {/* Summary Stats */}
+          <div className="grid grid-cols-3 gap-3 mt-6">
+            {highRisks > 0 && (
+              <div
+                onClick={() => changeFilter(FILTERS.HIGH)}
+                className={cn(
+                  "rounded-lg border border-red-500/30 p-3",
+                  currentFilter === FILTERS.HIGH
+                    ? "bg-red-500/30"
+                    : "hover:bg-red-500/10",
+                )}
+              >
+                <p className="text-2xl font-bold text-red-400">{highRisks}</p>
+                <p className="text-xs text-muted-foreground">High Risk</p>
+              </div>
+            )}
+            {mediumRisks > 0 && (
+              <div
+                onClick={() => changeFilter(FILTERS.MEDIUM)}
+                className={cn(
+                  "rounded-lg border border-amber-500/30 p-3",
+                  currentFilter === FILTERS.MEDIUM
+                    ? "bg-amber-500/30"
+                    : "hover:bg-amber-500/10",
+                )}
+              >
+                <p className="text-2xl font-bold text-amber-400">
+                  {mediumRisks}
+                </p>
+                <p className="text-xs text-muted-foreground">Medium Risk</p>
+              </div>
+            )}
+            {lowRisks > 0 && (
+              <div
+                onClick={() => changeFilter(FILTERS.LOW)}
+                className={cn(
+                  "rounded-lg border border-emerald-500/30 p-3",
+                  currentFilter === FILTERS.LOW
+                    ? "bg-emerald-500/30"
+                    : "hover:bg-emerald-500/10",
+                )}
+              >
+                <p className="text-2xl font-bold text-emerald-400">
+                  {lowRisks}
+                </p>
+                <p className="text-xs text-muted-foreground">Low Risk</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Risk Items */}
+        <div className="space-y-4">
+          {filteredRiskLevels.map((riskItem, index) => (
+            <RiskItemCard key={index} risk={riskItem} />
+          ))}
         </div>
       </div>
-
-      {/* Risk Items */}
-      <div className="space-y-4">
-        {filteredRiskLevels.map((riskItem, index) => (
-          <RiskItemCard key={index} risk={riskItem} />
-        ))}
-      </div>
-    </div>
+    </>
   );
   console.log("riskLevels");
   console.log(riskLevels);
@@ -125,13 +133,40 @@ export function AnalysisDisplay({
   );
 
   if (error) {
-    return <ErrorComponent error={error} />;
+    return (
+      <>
+        <DocumentPreviewComponent
+          viewFullText={viewFullText}
+          currentAnalysis={analysis}
+          setViewFullText={setViewFullText}
+        />
+        <ErrorComponent error={error} />
+      </>
+    );
   }
   if (riskLevels.length === 0) {
-    return noRiskfoundComponent;
+    return (
+      <>
+        <DocumentPreviewComponent
+          viewFullText={viewFullText}
+          currentAnalysis={analysis}
+          setViewFullText={setViewFullText}
+        />
+        {noRiskfoundComponent}
+      </>
+    );
   }
   if (!isStreaming && riskLevels.length === 0) {
-    return noRiskfoundComponent;
+    return (
+      <>
+        <DocumentPreviewComponent
+          viewFullText={viewFullText}
+          currentAnalysis={analysis}
+          setViewFullText={setViewFullText}
+        />
+        {noRiskfoundComponent}
+      </>
+    );
   }
   return riskfoundComponent;
 }
